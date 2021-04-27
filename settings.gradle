@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "Obligatorio"
+rootProject.name = "Menu Semanal"

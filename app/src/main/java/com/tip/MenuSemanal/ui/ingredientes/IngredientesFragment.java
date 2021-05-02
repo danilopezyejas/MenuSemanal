@@ -1,4 +1,4 @@
-package com.tip.MenuSemanal.ui.dashboard;
+package com.tip.MenuSemanal.ui.ingredientes;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.tip.MenuSemanal.R;
 
-public class DashboardFragment extends Fragment {
+public class IngredientesFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
+    private IngredientesViewModel ingredientesViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        final TextView textView = root.findViewById(R.id.text_dashboard);
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        ingredientesViewModel =
+                new ViewModelProvider(this).get(IngredientesViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_ingredientes, container, false);
+        final TextView textView = root.findViewById(R.id.text_ingredientes);
+        ingredientesViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

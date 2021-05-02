@@ -1,16 +1,16 @@
-package com.tip.MenuSemanal.ui.dashboard;
+package com.tip.MenuSemanal.ui.ingredientes;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class DashboardViewModel extends ViewModel {
+public class IngredientesViewModel extends ViewModel{
 
     private MutableLiveData<String> mText;
 
-    public DashboardViewModel() {
+    public IngredientesViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+        mText.setValue("This is ingredientes fragment");
     }
 
     public LiveData<String> getText() {

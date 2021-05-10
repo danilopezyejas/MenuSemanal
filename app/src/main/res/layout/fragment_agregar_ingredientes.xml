@@ -27,7 +27,6 @@
                 android:layout_height="237dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:onClick="agr"
                 android:text="Agregar" />
 
             <EditText

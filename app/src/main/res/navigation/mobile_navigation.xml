@@ -28,4 +28,9 @@
         android:name="com.tip.MenuSemanal.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/agregarIngredientes"
+        android:name="com.tip.MenuSemanal.AgregarIngredientes"
+        android:label="fragment_agregar_ingredientes"
+        tools:layout="@layout/fragment_agregar_ingredientes" />
 </navigation>

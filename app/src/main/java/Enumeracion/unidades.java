@@ -1,5 +1,18 @@
 package Enumeracion;
 
 public enum unidades {
-    gr, kg, ml, l
+    GR("gr"),
+    Kg("kg"),
+    Ml("ml"),
+    L("l");
+
+    private String unidad;
+
+    private unidades(String unidad){
+        this.unidad = unidad;
+    }
+
+    @Override public String toString(){
+        return unidad;
+    }
 }

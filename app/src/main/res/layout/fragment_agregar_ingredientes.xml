@@ -21,14 +21,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <Button
-                android:id="@+id/btnAceptarIngredientes"
-                android:layout_width="wrap_content"
-                android:layout_height="237dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Agregar" />
-
             <EditText
                 android:id="@+id/precioIngrediente"
                 android:layout_width="match_parent"
@@ -66,6 +58,14 @@
                     android:layout_height="47dp" />
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/btnAceptarIngredientes"
+                android:layout_width="wrap_content"
+                android:layout_height="237dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Agregar" />
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

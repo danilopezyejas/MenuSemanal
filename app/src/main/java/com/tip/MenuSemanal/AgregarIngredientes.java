@@ -62,19 +62,18 @@ public class AgregarIngredientes extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-//        unidadSelecionada = (Spinner) getView().findViewById(R.id.spinner);
-//        ArrayAdapter<unidades> u = new ArrayAdapter<unidades>(AgregarIngredientes.this, android.R.layout.simple_spinner_item, unidades.values());
-//        unidadSelecionada.setAdapter(u);
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
-        return inflater.inflate(R.layout.fragment_agregar_ingredientes, container, false);
+        View view =  inflater.inflate(R.layout.fragment_agregar_ingredientes, container, false);
+        unidadSelecionada = (Spinner) view.findViewById(R.id.spinner);
+        ArrayAdapter<unidades> u = new ArrayAdapter<unidades>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, unidades.values());
+        unidadSelecionada.setAdapter(u);
+
+        return view;
     }
 
 }

@@ -21,14 +21,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
-                android:id="@+id/precioIngrediente"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:gravity="center"
-                android:hint="Ingrese el precio"
-                android:inputType="number|numberDecimal" />
 
             <EditText
                 android:id="@+id/nombreIngrediente"
@@ -39,13 +31,22 @@
                 android:hint="Nombre Ingrediente"
                 android:inputType="textShortMessage|textPersonName" />
 
+            <EditText
+                android:id="@+id/precioIngrediente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="Ingrese el precio"
+                android:inputType="number|numberDecimal" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="129dp"
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName"
+                    android:id="@+id/etCantidad"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"

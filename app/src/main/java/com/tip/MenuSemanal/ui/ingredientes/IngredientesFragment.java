@@ -1,5 +1,7 @@
 package com.tip.MenuSemanal.ui.ingredientes;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,13 +30,9 @@ public class IngredientesFragment extends Fragment {
         ingredientesViewModel =
                 new ViewModelProvider(this).get(IngredientesViewModel.class);
         View root = inflater.inflate(R.layout.fragment_ingredientes, container, false);
-        final TextView textView = root.findViewById(R.id.text_ingredientes);
-        ingredientesViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        
+        cargarPreferencias();
+
 
         FloatingActionButton btnAgregarIngrediente = root.findViewById(R.id.btnAgregarIngredientes);
         btnAgregarIngrediente.setOnClickListener(new View.OnClickListener() {
@@ -46,9 +44,15 @@ public class IngredientesFragment extends Fragment {
         return root;
     }
 
-    public void agregarIngrediente(){
-        EditText nombre = getView().findViewById(R.id.nombreIngrediente);
-        EditText etPrecio = getView().findViewById(R.id.precioIngrediente);
-        int precio = Integer.parseInt(etPrecio.getText().toString());
+    private void cargarPreferencias() {
+
+        SharedPreferences preferences = getActivity().getSharedPreferences("ingredienteGuardados", Context.MODE_PRIVATE);
+
+        String nombre = preferences.getString("nombre","");
+        float precio = preferences.getFloat("precio", 0);
+        Integer cantidad = preferences.getInt("cantidad", 0);
+        String unidad = preferences.getString("unidad","");
+
     }
+
 }

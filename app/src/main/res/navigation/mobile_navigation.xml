@@ -15,7 +15,8 @@
         android:id="@+id/navigation_ingredientes"
         android:name="com.tip.MenuSemanal.ui.ingredientes.IngredientesFragment"
         android:label="@string/title_ingredientes"
-        tools:layout="@layout/fragment_ingredientes" />
+        tools:layout="@layout/fragment_ingredientes" >
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_recetas"
@@ -32,5 +33,11 @@
         android:id="@+id/agregarIngredientes"
         android:name="com.tip.MenuSemanal.AgregarIngredientes"
         android:label="fragment_agregar_ingredientes"
-        tools:layout="@layout/fragment_agregar_ingredientes" />
+        tools:layout="@layout/fragment_agregar_ingredientes" >
+        <action
+            android:id="@+id/ir_a_altaIngredientes"
+            app:destination="@id/navigation_ingredientes"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popExitAnim="@android:anim/slide_out_right"/>
+    </fragment>
 </navigation>

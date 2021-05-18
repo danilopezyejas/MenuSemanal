@@ -22,7 +22,11 @@
         android:id="@+id/navigation_recetas"
         android:name="com.tip.MenuSemanal.ui.recetas.RecetasFragment"
         android:label="@string/title_recetas"
-        tools:layout="@layout/fragment_recetas" />
+        tools:layout="@layout/fragment_recetas" >
+        <action
+            android:id="@+id/action_navigation_recetas_to_fragmentAgregarReceta"
+            app:destination="@id/fragmentAgregarReceta" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"
@@ -39,5 +43,14 @@
             app:destination="@id/navigation_ingredientes"
             app:exitAnim="@android:anim/slide_out_right"
             app:popExitAnim="@android:anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentAgregarReceta"
+        android:name="com.tip.MenuSemanal.FragmentAgregarReceta"
+        android:label="fragment_agregar_receta"
+        tools:layout="@layout/fragment_agregar_receta" >
+        <action
+            android:id="@+id/action_fragmentAgregarReceta_to_navigation_ingredientes"
+            app:destination="@id/navigation_ingredientes" />
     </fragment>
 </navigation>

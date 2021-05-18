@@ -15,4 +15,12 @@
         <item>Uranus</item>
         <item>Neptune</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="agregar_receta">AGREGAR RECETA</string>
+    <string name="nombre">nombre de receta:</string>
+    <string name="lista_ingredientes">lista ingredientes</string>
+    <string name="name">Name</string>
+    <string name="todo">TODO</string>
+
 </resources>

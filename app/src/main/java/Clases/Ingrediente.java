@@ -1,21 +1,27 @@
 package Clases;
-
-import Enumeracion.unidades;
+//
+//import Enumeracion.unidades;
 
 public class Ingrediente {
+    String id;
     String nombre;
     float precio;
     int cantidad;
-    unidades unidad;
+    String unidad;
 
 
-    private Ingrediente() {}
+    public Ingrediente() {}
 
-    private Ingrediente(String nombre, float precio, int cantidad, unidades unidad) {
+    public Ingrediente(String id, String nombre, float precio, int cantidad, String unidad) {
+        this.id = id;
         this.nombre = nombre;
         this.precio = precio;
         this.cantidad = cantidad;
         this.unidad = unidad;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getNombre() {
@@ -30,8 +36,12 @@ public class Ingrediente {
         return cantidad;
     }
 
-    public unidades getUnidad() {
+    public String getUnidad() {
         return unidad;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setNombre(String nombre) {
@@ -46,7 +56,7 @@ public class Ingrediente {
         this.cantidad = cantidad;
     }
 
-    public void setUnidad(unidades unidad) {
+    public void setUnidad(String unidad) {
         this.unidad = unidad;
     }
 }

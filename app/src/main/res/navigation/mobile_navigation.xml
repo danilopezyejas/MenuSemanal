@@ -36,7 +36,7 @@
     <fragment
         android:id="@+id/agregarIngredientes"
         android:name="com.tip.MenuSemanal.AgregarIngredientes"
-        android:label="fragment_agregar_ingredientes"
+        android:label="@string/agregar_ingredientes"
         tools:layout="@layout/fragment_agregar_ingredientes" >
         <action
             android:id="@+id/ir_a_altaIngredientes"

@@ -41,7 +41,8 @@ public class AdapterDatosIngredientes extends RecyclerView.Adapter<AdapterDatosI
         
         public ViewHolderDatos(@NonNull @NotNull View itemView) {
             super(itemView);
-            nombreIngrediente = (TextView) itemView.findViewById(R.id.nombre);
+            nombreIngrediente = (TextView) itemView.findViewById(R.id.textView3);
+            nombreIngrediente.setText("Algo");
         }
     }
 }

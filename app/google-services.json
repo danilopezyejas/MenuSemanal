@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "852222172811",
+    "firebase_url": "https://menu-semanal-tip-default-rtdb.firebaseio.com",
+    "project_id": "menu-semanal-tip",
+    "storage_bucket": "menu-semanal-tip.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852222172811:android:c0ac4c26adf96bd40ffe8e",
+        "android_client_info": {
+          "package_name": "com.tip.MenuSemanal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852222172811-8dao3u6b6rk9h8nlcj7pnebi9a9ios55.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvDA9rsHw9JpoCsfC69PBI3jIPkfGussk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "852222172811-8dao3u6b6rk9h8nlcj7pnebi9a9ios55.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

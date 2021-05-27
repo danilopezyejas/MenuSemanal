@@ -2,21 +2,38 @@ package com.tip.MenuSemanal;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import Clases.Ingrediente;
 import Enumeracion.unidades;
 
 /**
@@ -26,16 +43,15 @@ import Enumeracion.unidades;
  */
 public class AgregarIngredientes extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private Spinner unidadSelecionada;
+
+    DatabaseReference db;
 
     public AgregarIngredientes() {
         // Required empty public constructor
@@ -74,6 +90,8 @@ public class AgregarIngredientes extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        db = FirebaseDatabase.getInstance().getReference();
+
         View view =  inflater.inflate(R.layout.fragment_agregar_ingredientes, container, false);
         unidadSelecionada = (Spinner) view.findViewById(R.id.spinner);
         ArrayAdapter<unidades> u = new ArrayAdapter<unidades>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, unidades.values());
@@ -83,31 +101,57 @@ public class AgregarIngredientes extends Fragment {
         agregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                EditText etNombre = getView().findViewById(R.id.nombreIngrediente);
+                EditText etPrecio = getView().findViewById(R.id.precioIngrediente);
+                EditText etCantidad = getView().findViewById(R.id.etCantidad);
+                Spinner spUnidad = (Spinner) getView().findViewById(R.id.spinner);
 
-                    String nombre = getView().findViewById(R.id.nombreIngrediente).toString();
-                    EditText etPrecio = getView().findViewById(R.id.precioIngrediente);
-                    int precio = Integer.parseInt(etPrecio.getText().toString());
-                    EditText etCantidad = getView().findViewById(R.id.etCantidad);
+                //Me aseguro de que el usuario alla completado todos los campos
+                if (!isEmpty(etNombre)&&!isEmpty(etPrecio)&&!isEmpty(etCantidad)){
+                    String nombre = etNombre.getText().toString();
+                    float precio = Float.parseFloat(etPrecio.getText().toString());
                     int cantidad = Integer.parseInt(etCantidad.getText().toString());
-                    Spinner spUnidad = (Spinner) getView().findViewById(R.id.spinner);
                     String unidad = spUnidad.getSelectedItem().toString();
 
-                SharedPreferences preferences = getActivity().getSharedPreferences("ingredienteGuardados", Context.MODE_PRIVATE);
+                    //Creo el id (me lo proporciona firebase)
+                    String idIngrediente = db.push().getKey();
 
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("nombre",nombre);
-                editor.putFloat("precio",precio);
-                editor.putInt("cantidad",cantidad);
-                editor.putString("unidad",unidad);
+                    Ingrediente newIngrediente = new Ingrediente(idIngrediente,nombre,precio,cantidad,unidad);
 
-                editor.commit();
-
-                Navigation.findNavController(view).navigate(R.id.ir_a_altaIngredientes);
-
+                    //lo agrego a la base de datos
+                    db.child("Ingredientes").child(idIngrediente).setValue(newIngrediente).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull @NotNull Task<Void> task2) {
+                           //Compruebo si se agrego bien a la base
+                            if(task2.isComplete()){
+                                Navigation.findNavController(view).navigate(R.id.ir_a_altaIngredientes);
+                                closeKeyBoard( view);
+                            }else{
+                                Toast.makeText(getActivity(),"Ocurrio un error!",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                } else {
+                    Toast.makeText(getActivity(),"Debe completar todos los campos!",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         return view;
     }
+
+    private void closeKeyBoard(View view){
+        view = getActivity().getCurrentFocus();
+        if (view != null){
+            InputMethodManager imm = (InputMethodManager)
+                    getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    private boolean isEmpty(EditText etText) {
+        return etText.getText().toString().trim().length() == 0;
+    }
+
 
 }

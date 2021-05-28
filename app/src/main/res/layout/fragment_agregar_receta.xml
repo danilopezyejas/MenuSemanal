@@ -45,11 +45,29 @@
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FF9800"
+                android:background="#FFC107"
                 android:inputType="textPersonName"
-                android:text="@string/name"
                 android:textSize="25sp" />
 
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Descripcion:"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/editTextTextMultiLine2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:ems="10"
+                android:gravity="start|top"
+                android:inputType="textMultiLine"
+
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textView6"
@@ -62,6 +80,7 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvlistaIngredientes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

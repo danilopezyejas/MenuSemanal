@@ -6,7 +6,7 @@
     <string name="title_ingredientes">Ingredientes</string>
     <string name="unidad">Unidad</string>
     <string name="agregar_ingredientes">Agregar Ingredientes</string>
-    <string name="agregar_receta">AGREGAR RECETA</string>
+    <string name="agregar_receta">--- RECETA ---</string>
     <string name="nombre">nombre de receta:</string>
     <string name="lista_ingredientes">lista ingredientes</string>
     <string name="name">Name</string>

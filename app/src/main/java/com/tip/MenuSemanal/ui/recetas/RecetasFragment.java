@@ -54,9 +54,9 @@ public class RecetasFragment extends Fragment {
         recyclerView = (RecyclerView) root.findViewById(R.id.rvlistaRecetas);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new AdapterListaReceta(recetas));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-
+        recyclerView.setAdapter(new AdapterListaReceta(recetas));
+        recyclerView.getAdapter().notifyDataSetChanged();
         recetasViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {

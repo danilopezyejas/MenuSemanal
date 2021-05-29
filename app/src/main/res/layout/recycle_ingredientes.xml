@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="3dp"
+    app:cardElevation="3dp"
+    app:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/imagenIngrediente"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/img_ingrediente"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="vertical"
+            android:layout_toRightOf="@id/imagenIngrediente"
+            android:layout_toEndOf="@id/imagenIngrediente"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp">
+
+            <TextView
+                android:id="@+id/idNomIngr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Nombre"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:padding="5dp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:id="@+id/idPrecio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Precio"
+                    android:layout_marginBottom="2dp"/>
+
+                <TextView
+                    android:id="@+id/idCantidad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cantidad"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="2dp"/>
+
+                <TextView
+                    android:id="@+id/idUnidad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Unidad"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginRight="2dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

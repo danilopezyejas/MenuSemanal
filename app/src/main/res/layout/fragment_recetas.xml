@@ -5,7 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.recetas.RecetasFragment">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
@@ -27,6 +34,9 @@
         tools:layout_editor_absoluteX="1dp"
         tools:ignore="MissingConstraints" />
 
+
+    </LinearLayout>
+    </ScrollView>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnAgregarReceta"
         android:layout_width="wrap_content"
@@ -38,5 +48,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="OnClick" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

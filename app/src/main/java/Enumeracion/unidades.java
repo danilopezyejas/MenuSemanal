@@ -4,7 +4,9 @@ public enum unidades {
     GR("gr"),
     Kg("kg"),
     Ml("ml"),
-    L("l");
+    L("l"),
+    CD("Cdas."),
+    CDTA("Cditas.");
 
     private String unidad;
 

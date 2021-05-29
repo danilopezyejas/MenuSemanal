@@ -43,7 +43,9 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull AdapterListaIngredientes.ViewHoldersDatos holder, int position) {
+
         holder.asignardatos(listaIngrediente.get(position));
+
 
         holder.item.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
@@ -102,7 +104,7 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
     public class ViewHoldersDatos extends RecyclerView.ViewHolder {
         EditText edCantidad;
         AutoCompleteTextView acNombre;
-        Spinner spUnidad;
+        TextView txtUnidad;
         View item;
 
         public ViewHoldersDatos(@NonNull @NotNull View itemView) {
@@ -110,14 +112,14 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             this.item= itemView;
             acNombre=itemView.findViewById(R.id.ACnombre);
             edCantidad=itemView.findViewById(R.id.EdCantidad);
-            spUnidad=itemView.findViewById(R.id.SpUnidad);
+            txtUnidad=itemView.findViewById(R.id.txtUnidad);
         }
 
 
         public void asignardatos(Ingrediente ingrediente) {
             acNombre.setText(ingrediente.getNombre());
             edCantidad.setText(Integer.toString(ingrediente.getCantidad()));
-
+            txtUnidad.setText((ingrediente.getUnidad()));
 
         }
     }

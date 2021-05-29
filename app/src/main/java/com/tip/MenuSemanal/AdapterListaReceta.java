@@ -44,32 +44,10 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
     public void onBindViewHolder(@NonNull @NotNull AdapterListaReceta.ViewHoldersDatos holder, int position) {
         //holder.asignardatos(listaRecetas.get(position).getNombre(),listaRecetas.get(position).getDescripcion());
         holder.asignardatos(listaRecetas.get(position));
+
         final int p = position;
 
-        holder.item.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("ResourceAsColor")
-            @Override
-            public void onClick(View v) {
-                System.out.println("click");
-                if (holder.item!=viewant){
-                        System.out.println("set on");
 
-                            holder.item.setBackgroundColor (purple_200);
-                             //holder.itemView.setAlpha(0.5f);
-                        if (viewant != null){
-
-                            //viewant.setAlpha(1f);
-
-                              viewant.setBackgroundColor(Color.TRANSPARENT);
-                        }
-                        viewant=holder.item;
-                    }
-                   notifyDataSetChanged();
-                }
-
-
-
-        });
 
     }
 
@@ -110,6 +88,23 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
             this.item= itemView;
             txtnombre=itemView.findViewById(R.id.txtNombreReceta);
             txtdescripcion=itemView.findViewById(R.id.txtDescripcionReceta);
+
+            item.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("ResourceAsColor")
+                @Override
+                public void onClick(View v) {
+                    System.out.println("click");
+                    if (item!=viewant){
+                        item.setBackgroundColor (purple_200);
+                        if (viewant != null){
+                            viewant.setBackgroundColor(Color.TRANSPARENT);
+                        }
+                        viewant=item;
+                    }
+                    notifyDataSetChanged();
+                }
+            });
+
         }
 
         public void bindView(){

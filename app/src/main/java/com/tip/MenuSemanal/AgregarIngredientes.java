@@ -119,6 +119,7 @@ public class AgregarIngredientes extends Fragment {
                     Ingrediente newIngrediente = new Ingrediente(idIngrediente,nombre,precio,cantidad,unidad);
 
                     //lo agrego a la base de datos
+
                     db.child("Ingredientes").child(idIngrediente).setValue(newIngrediente).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<Void> task2) {

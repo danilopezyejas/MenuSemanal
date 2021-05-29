@@ -10,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="5"
-        android:text="AutoCompleteTextView" />
+        android:hint="AutoCompleteTextView"
+        android:clickable="false"
+        android:focusable="false"/>
 
     <EditText
         android:id="@+id/EdCantidad"
@@ -19,12 +21,18 @@
         android:layout_weight="1"
         android:ems="10"
         android:hint="cantidad"
-        android:inputType="number" />
+        android:inputType="number"
+        android:focusableInTouchMode="false"
+        android:focusable="false"
+        android:longClickable="false"
 
-    <Spinner
-        android:id="@+id/SpUnidad"
+               />
+
+    <TextView
+        android:id="@+id/txtUnidad"
 
         android:layout_width="50dp"
+        android:textAlignment="textEnd"
 
         android:layout_height="wrap_content"
         android:layout_weight="1" />

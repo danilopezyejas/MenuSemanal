@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class FragmentAgregarReceta extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    Spinner spUnidad;
+    TextView txtUnidad;
 
     public FragmentAgregarReceta() {
         // Required empty public constructor
@@ -75,8 +76,8 @@ public class FragmentAgregarReceta extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_agregar_receta, container, false);
 
-        spUnidad = (Spinner) view.findViewById(R.id.SpUnidad);
-        ArrayAdapter<unidades> u = new ArrayAdapter<unidades>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, unidades.values());
+        txtUnidad = (TextView) view.findViewById(R.id.txtUnidad);
+        //ArrayAdapter<unidades> u = new ArrayAdapter<unidades>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, unidades.values());
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rvlistaIngredientes);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

@@ -11,4 +11,8 @@
     <color name="red">#DA291C</color>
     <color name="botones">#FF000000</color>
 
+    <color name="pressed_color">#FF2700</color>
+    <color name="selected_color">#1E42FF</color>
+    <color name="focused_color">#2F8DFF</color>
+
 </resources>

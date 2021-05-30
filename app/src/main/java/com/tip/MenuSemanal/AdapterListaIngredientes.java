@@ -1,10 +1,13 @@
 package com.tip.MenuSemanal;
+
 import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,17 +20,15 @@ import java.util.ArrayList;
 import Clases.Ingrediente;
 import Clases.Recetas;
 
-import static com.tip.MenuSemanal.R.color.*;
-import static com.tip.MenuSemanal.R.drawable.fondo_botones;
-import static com.tip.MenuSemanal.R.id.textView;
+import static com.tip.MenuSemanal.R.color.purple_200;
 
 
-public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.ViewHoldersDatos> {
+public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaIngredientes.ViewHoldersDatos> {
 
-    ArrayList<Recetas> listaRecetas;
+    ArrayList<Ingrediente> listaIngrediente;
     View viewant = null;
-    public AdapterListaReceta(@NonNull ArrayList<Recetas> lRecetas) {
-        listaRecetas = lRecetas;
+    public AdapterListaIngredientes(@NonNull ArrayList<Ingrediente> lingrediente) {
+        listaIngrediente=lingrediente;
     }
 
     @NonNull
@@ -35,16 +36,14 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
     @Override
 
 
-    public AdapterListaReceta.ViewHoldersDatos onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_recetas, parent, false);
+    public AdapterListaIngredientes.ViewHoldersDatos onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_lista_ingredientes, parent, false);
         return new ViewHoldersDatos(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull AdapterListaReceta.ViewHoldersDatos holder, int position) {
-        //holder.asignardatos(listaRecetas.get(position).getNombre(),listaRecetas.get(position).getDescripcion());
-        holder.asignardatos(listaRecetas.get(position));
-        final int p = position;
+    public void onBindViewHolder(@NonNull @NotNull AdapterListaIngredientes.ViewHoldersDatos holder, int position) {
+        holder.asignardatos(listaIngrediente.get(position));
 
         holder.item.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
@@ -75,7 +74,7 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
 
     @Override
     public int getItemCount() {
-        return listaRecetas.size();
+        return listaIngrediente.size();
     }
 
 
@@ -86,43 +85,40 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
     }
 
     // Insert a new item to the RecyclerView on a predefined position
-    public void insert(int position, Recetas receta) {
-        listaRecetas.add(position, receta);
+    public void insert(int position, Ingrediente ingrediente) {
+        listaIngrediente.add(position, ingrediente);
         notifyItemInserted(position);
     }
 
     // Remove a RecyclerView item containing a specified Data object
-    public void remove(Recetas receta) {
-        int position = listaRecetas.indexOf(receta);
+    public void remove(Ingrediente ingrediente) {
+        int position = listaIngrediente.indexOf(ingrediente);
         if(position>=0) {
-            listaRecetas.remove(position);
+            listaIngrediente.remove(position);
             notifyItemRemoved(position);
         }
     }
 
     public class ViewHoldersDatos extends RecyclerView.ViewHolder {
-        TextView txtnombre;
-        TextView txtdescripcion;
+        EditText edCantidad;
+        AutoCompleteTextView acNombre;
+        Spinner spUnidad;
         View item;
 
         public ViewHoldersDatos(@NonNull @NotNull View itemView) {
             super(itemView);
             this.item= itemView;
-            txtnombre=itemView.findViewById(R.id.txtNombreReceta);
-            txtdescripcion=itemView.findViewById(R.id.txtDescripcionReceta);
+            acNombre=itemView.findViewById(R.id.ACnombre);
+            edCantidad=itemView.findViewById(R.id.EdCantidad);
+            spUnidad=itemView.findViewById(R.id.SpUnidad);
         }
 
-        public void bindView(){
 
-        }
+        public void asignardatos(Ingrediente ingrediente) {
+            acNombre.setText(ingrediente.getNombre());
+            edCantidad.setText(Integer.toString(ingrediente.getCantidad()));
 
-        public void asignardatos(String nombre, String descripcion) {
-            txtnombre.setText(nombre);
-            txtdescripcion.setText(descripcion);
-        }
-        public void asignardatos(Recetas receta) {
-            txtnombre.setText(receta.getNombre());
-            txtdescripcion.setText(receta.getDescripcion());
+
         }
     }
 }

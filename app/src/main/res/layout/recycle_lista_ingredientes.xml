@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <AutoCompleteTextView
+        android:id="@+id/ACnombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:text="AutoCompleteTextView" />
+
+    <EditText
+        android:id="@+id/EdCantidad"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="cantidad"
+        android:inputType="number" />
+
+    <Spinner
+        android:id="@+id/SpUnidad"
+
+        android:layout_width="50dp"
+
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+</LinearLayout>

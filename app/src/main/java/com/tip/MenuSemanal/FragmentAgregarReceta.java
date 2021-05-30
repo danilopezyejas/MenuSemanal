@@ -3,10 +3,21 @@ package com.tip.MenuSemanal;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+
+import Clases.Ingrediente;
+import Enumeracion.unidades;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +34,7 @@ public class FragmentAgregarReceta extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    Spinner spUnidad;
 
     public FragmentAgregarReceta() {
         // Required empty public constructor
@@ -49,6 +61,7 @@ public class FragmentAgregarReceta extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -59,6 +72,29 @@ public class FragmentAgregarReceta extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_agregar_receta, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_agregar_receta, container, false);
+
+        spUnidad = (Spinner) view.findViewById(R.id.SpUnidad);
+        ArrayAdapter<unidades> u = new ArrayAdapter<unidades>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, unidades.values());
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rvlistaIngredientes);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        recyclerView.setAdapter(new AdapterListaIngredientes(cargaingredientes()));
+        recyclerView.getAdapter().notifyDataSetChanged();
+
+        return view;
     }
+
+
+    ArrayList<Ingrediente> cargaingredientes(){
+        ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
+        ingredientes.add(new Ingrediente("1","papa",100,4,unidades.GR.toString()));
+        ingredientes.add(new Ingrediente("2","choclo",100,3,unidades.GR.toString()));
+        ingredientes.add(new Ingrediente("1","papa",100,100,unidades.GR.toString()));
+        ingredientes.add(new Ingrediente("1","papa",100,100,unidades.GR.toString()));
+        return ingredientes;
+    }
+
 }

@@ -7,9 +7,7 @@ public class Recetas {
     String descripcion;
 
 
-    private Recetas() {}
-
-    private Recetas(String nombre,String descripcion) {
+    public Recetas(String nombre, String descripcion) {
         this.nombre = nombre;
         this.descripcion = descripcion;
     }

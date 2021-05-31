@@ -39,7 +39,6 @@ import static androidx.navigation.Navigation.findNavController;
 
 public class IngredientesFragment extends Fragment {
 
-    private IngredientesViewModel ingredientesViewModel;
     private RecyclerView recyclerView;
     private AdapterDatosIngredientes adapterDatosIngredientes;
     private  ArrayList<Ingrediente> listaIngredientes;
@@ -48,14 +47,15 @@ public class IngredientesFragment extends Fragment {
     private  TextView textView;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-//        ingredientesViewModel =
-//                new ViewModelProvider(this).get(IngredientesViewModel.class);
         View root = inflater.inflate(R.layout.fragment_ingredientes, container, false);
 
         recyclerView = root.findViewById(R.id.recycleIngredientes);
         listaIngredientes = new ArrayList<>();
+
+        //Obtengo de la base la tabla Ingredientes
         db = FirebaseDatabase.getInstance().getReference("Ingredientes");
 
+        //Evaluo si trajo algo
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -87,19 +87,10 @@ public class IngredientesFragment extends Fragment {
     }
 
     private void cargarPreferencias() {
-
         SharedPreferences preferences = getActivity().getSharedPreferences("ingredienteGuardados", Context.MODE_PRIVATE);
-
-//        String nombre = preferences.getString("nombre","");
-//        float precio = preferences.getFloat("precio", 0);
-//        Integer cantidad = preferences.getInt("cantidad", 0);
-//        String unidad = preferences.getString("unidad","");
-//
-//        listaIngredientes.add(new Ingrediente("id1", db, 10, 2, "KG"));
-//        listaIngredientes.add(new Ingrediente("id2", "Arroz", 19, 5, "gr"));
-
     }
 
+//    Mando la lista que descargue de la base al Adapter para que lo muestre en el recycler
     private  void mostrar(){
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapterDatosIngredientes = new AdapterDatosIngredientes(listaIngredientes);

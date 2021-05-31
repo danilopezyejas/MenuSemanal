@@ -13,7 +13,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="298dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -22,14 +22,44 @@
             app:layout_constraintTop_toTopOf="parent">
 
 
-            <EditText
-                android:id="@+id/nombreIngrediente"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:gravity="center"
-                android:hint="Nombre Ingrediente"
-                android:inputType="textShortMessage|textPersonName" />
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/nombreIngrediente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="15"
+                    android:gravity="center"
+                    android:hint="Nombre Ingrediente"
+                    android:inputType="textShortMessage|textPersonName" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageButton
+                        android:id="@+id/idMicroIngre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_microfono"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="..."
+                        android:textSize="30sp"
+                        android:padding="0dp"
+                        android:layout_marginTop="0dp"/>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/precioIngrediente"
@@ -59,16 +89,28 @@
                     android:layout_height="47dp" />
 
             </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <Button
                 android:id="@+id/btnAceptarIngredientes"
-                android:layout_width="wrap_content"
-                android:layout_height="237dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Agregar" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:text="Agregar"
+                android:layout_marginBottom="100dp"/>
 
         </LinearLayout>
+
+
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

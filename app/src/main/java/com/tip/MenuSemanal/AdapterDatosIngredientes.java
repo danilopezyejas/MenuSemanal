@@ -1,5 +1,7 @@
 package com.tip.MenuSemanal;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -7,42 +9,58 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DatabaseReference;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import Clases.Ingrediente;
+
 public class AdapterDatosIngredientes extends RecyclerView.Adapter<AdapterDatosIngredientes.ViewHolderDatos> {
 
-    ArrayList<String> listaIngredientes;
+    ArrayList<Ingrediente> listaIngredientes;
 
-    public AdapterDatosIngredientes(ArrayList<String>listaIngredientes){
+    public AdapterDatosIngredientes(ArrayList<Ingrediente> listaIngredientes){
         this.listaIngredientes = listaIngredientes;
     }
     @NonNull
     @NotNull
     @Override
     public ViewHolderDatos onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_ingredientes ,null,false);
+        return new ViewHolderDatos(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolderDatos holder, int position) {
-
+        String nombre = listaIngredientes.get(position).getNombre();
+        float precio = listaIngredientes.get(position).getPrecio();
+        String unidad = listaIngredientes.get(position).getUnidad();
+        int cantidad = listaIngredientes.get(position).getCantidad();
+        holder.nombre.setText(nombre);
+        holder.precio.setText(Float.toString(precio));
+        holder.unidad.setText(unidad);
+        holder.cantidad.setText(Integer.toString(cantidad));
     }
 
     @Override
-    public int getItemCount() {
-        return 0;
-    }
+    public int getItemCount() { return listaIngredientes.size(); }
 
     public class ViewHolderDatos extends RecyclerView.ViewHolder {
 
-        TextView nombreIngrediente;
+        TextView nombre;
+        TextView precio;
+        TextView unidad;
+        TextView cantidad;
         
         public ViewHolderDatos(@NonNull @NotNull View itemView) {
             super(itemView);
-            nombreIngrediente = (TextView) itemView.findViewById(R.id.textView3);
-            nombreIngrediente.setText("Algo");
+            nombre = (TextView) itemView.findViewById(R.id.idNomIngr);
+            precio = (TextView) itemView.findViewById(R.id.idPrecio);
+            unidad = (TextView) itemView.findViewById(R.id.idUnidad);
+            cantidad = (TextView) itemView.findViewById(R.id.idCantidad);
+
         }
     }
 }

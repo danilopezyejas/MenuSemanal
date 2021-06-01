@@ -158,7 +158,7 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             acNombre = itemView.findViewById(R.id.ACnombre);
             edCantidad = itemView.findViewById(R.id.EdCantidad);
             txtUnidad = itemView.findViewById(R.id.txtUnidad);
-            chk = itemView.findViewById(R.id.chkestado);
+            //chk = itemView.findViewById(R.id.chkestado);
 
         }
 
@@ -167,14 +167,14 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
         public void asignardatos(@NotNull Ingrediente ingrediente, int position) {
             acNombre.setText(ingrediente.getNombre());
             edCantidad.setText(Integer.toString(ingrediente.getCantidad()));
-            //txtUnidad.setText(Boolean.toString(chk.isChecked()));
+            txtUnidad.setText(ingrediente.getUnidad());
             posicion = position;
-            chk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-
-                }
-            });
+//            chk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//
+//                }
+//            });
 
 
         }

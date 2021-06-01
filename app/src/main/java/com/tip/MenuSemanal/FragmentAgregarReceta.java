@@ -40,7 +40,7 @@ public class FragmentAgregarReceta extends Fragment {
     private String mParam1;
     private String mParam2;
     TextView txtUnidad;
-
+    //ArrayList<Ingrediente> listaIngredientes = new ArrayList<Ingrediente>()
     public FragmentAgregarReceta() {
         // Required empty public constructor
     }
@@ -105,6 +105,8 @@ public class FragmentAgregarReceta extends Fragment {
             public void onClick(View view) {
 
 
+
+
             }
         });
 
@@ -114,17 +116,8 @@ public class FragmentAgregarReceta extends Fragment {
 
     ArrayList<Ingrediente> cargaingredientes(){
         ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
-        ingredientes.add(new Ingrediente("1","papa",100,4,unidades.GR.toString()));
+        ingredientes.add(new Ingrediente("1","harina",100,4,unidades.GR.toString()));
         ingredientes.add(new Ingrediente("2","choclo",100,3,unidades.GR.toString()));
-        ingredientes.add(new Ingrediente("1","papa",100,100,unidades.GR.toString()));
-        ingredientes.add(new Ingrediente("1","papa",100,100,unidades.GR.toString()));
-        ingredientes.add(new Ingrediente("1","papa",100,4,unidades.GR.toString()));
-        ingredientes.add(new Ingrediente("2","choclo",100,3,unidades.GR.toString()));
-        ingredientes.add(new Ingrediente("1","papa",100,100,unidades.GR.toString()));
-        ingredientes.add(new Ingrediente("1","papa",100,100,unidades.GR.toString()));
-        ingredientes.add(new Ingrediente("1","papa",100,4,unidades.GR.toString()));
-        ingredientes.add(new Ingrediente("2","choclo",100,3,unidades.GR.toString()));
-        ingredientes.add(new Ingrediente("1","papa",100,100,unidades.GR.toString()));
         ingredientes.add(new Ingrediente("1","papa",100,100,unidades.GR.toString()));
         return ingredientes;
     }

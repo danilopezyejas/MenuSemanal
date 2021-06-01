@@ -8,9 +8,9 @@ public enum unidades {
     CD("Cdas."),
     CDTA("Cditas.");
 
-    private String unidad;
+    private final String unidad;
 
-    private unidades(String unidad){
+    unidades(String unidad){
         this.unidad = unidad;
     }
 

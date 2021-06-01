@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 public class RecetasViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private final MutableLiveData<String> mText;
 
     public RecetasViewModel() {
         mText = new MutableLiveData<>();

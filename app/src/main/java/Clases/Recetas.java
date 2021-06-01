@@ -5,11 +5,12 @@ import Enumeracion.unidades;
 public class Recetas {
     String nombre;
     String descripcion;
-
+    boolean Sel;
 
     public Recetas(String nombre, String descripcion) {
         this.nombre = nombre;
         this.descripcion = descripcion;
+        this.Sel= false;
     }
 
     public String getNombre() {
@@ -17,6 +18,7 @@ public class Recetas {
     }
 
     public String getDescripcion(){ return this.descripcion;}
+    public boolean getSel(){return this.Sel;}
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -24,5 +26,5 @@ public class Recetas {
     public void setDescripcion(String descripcion) {
         this.descripcion=descripcion;
     }
-
+    public void setSel (boolean sel){this.Sel = sel;}
 }

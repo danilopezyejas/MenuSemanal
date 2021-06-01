@@ -16,11 +16,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tip.MenuSemanal.AdapterListaReceta;
 import com.tip.MenuSemanal.R;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
+import Clases.Ingrediente;
 import Clases.Recetas;
 
 import static androidx.navigation.Navigation.findNavController;
@@ -31,7 +39,7 @@ public class RecetasFragment extends Fragment {
     private RecetasViewModel recetasViewModel;
     private RecyclerView recyclerView;
     private ArrayList<Recetas> recetas;
-
+    private DatabaseReference db;
 
 
 
@@ -41,22 +49,63 @@ public class RecetasFragment extends Fragment {
 
 
         recetas = new ArrayList<Recetas>();
+
         recetas.add(new Recetas("salsa de damasco","nada"));
         recetas.add(new Recetas("arroz con leche","nada"));
         recetas.add(new Recetas("pancito al guiso","nada"));
+        recetas.add(new Recetas("salsa de damasco","nada"));
+        recetas.add(new Recetas("arroz con leche","nada"));
+        recetas.add(new Recetas("pancito al guiso","nada"));
+        recetas.add(new Recetas("salsa de damasco","nada"));
+        recetas.add(new Recetas("arroz con leche","nada"));
+        recetas.add(new Recetas("pancito al guiso","nada"));
+        recetas.add(new Recetas("arroz con leche","nada"));
+        recetas.add(new Recetas("pancito al guiso","nada"));
+        recetas.add(new Recetas("arroz con leche","nada"));
+        recetas.add(new Recetas("pancito al guiso","nada"));
+        recetas.add(new Recetas("arroz con leche","nada"));
+        recetas.add(new Recetas("pancito al guiso","nada"));
+        recetas.add(new Recetas("arroz con leche","nada"));
+        recetas.add(new Recetas("pancito al guiso","nada"));
+        recetas.add(new Recetas("arroz con leche","nada"));
+        recetas.add(new Recetas("pancito al guiso","nada"));
+        recetas.add(new Recetas("arroz con leche","nada"));
+        recetas.add(new Recetas("ultimo","nada"));
 
 
         recetasViewModel =
                 new ViewModelProvider(this).get(RecetasViewModel.class);
         View root = inflater.inflate(R.layout.fragment_recetas, container, false);
         //final TextView textView = root.findViewById(//id.text_recetas);
+        //Obtengo de la base la tabla Ingredientes
+        db = FirebaseDatabase.getInstance().getReference("Recetas");
+
+        //Evaluo si trajo algo
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+
+               // recetas.clear();
+                for(DataSnapshot recetasDataSnap : snapshot.getChildren()){
+                    Recetas receta = recetasDataSnap.getValue(Recetas.class);
+                    recetas.add(receta);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
 
         recyclerView = (RecyclerView) root.findViewById(R.id.rvlistaRecetas);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(new AdapterListaReceta(recetas));
-        recyclerView.getAdapter().notifyDataSetChanged();
+        //recyclerView.getAdapter().notifyDataSetChanged();
+
+
         recetasViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {
@@ -71,6 +120,10 @@ public class RecetasFragment extends Fragment {
                 }
 
         });
+
+
+
+
         return root;
     }
 }

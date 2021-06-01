@@ -15,10 +15,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 
 import Clases.Ingrediente;
 import Enumeracion.unidades;
+
+import static androidx.navigation.Navigation.findNavController;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -66,6 +70,7 @@ public class FragmentAgregarReceta extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            Toast.makeText(getContext(),mParam1,Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -75,8 +80,10 @@ public class FragmentAgregarReceta extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_agregar_receta, container, false);
-
+        TextView txtnombrer =(TextView) view.findViewById(R.id.edNombreReceta);
         txtUnidad = (TextView) view.findViewById(R.id.txtUnidad);
+
+        txtnombrer.setText(mParam1);
         //ArrayAdapter<unidades> u = new ArrayAdapter<unidades>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, unidades.values());
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rvlistaIngredientes);
         recyclerView.setHasFixedSize(true);
@@ -84,6 +91,22 @@ public class FragmentAgregarReceta extends Fragment {
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(new AdapterListaIngredientes(cargaingredientes()));
         recyclerView.getAdapter().notifyDataSetChanged();
+        FloatingActionButton faborrar = view.findViewById(R.id.FaBorrarIngrediente);
+        faborrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               // ( (AdapterListaIngredientes)recyclerView.getAdapter()).removeSelected();
+            }
+        });
+
+        FloatingActionButton fagregar =view.findViewById(R.id.FaAgregarIngrediente);
+        faborrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+            }
+        });
 
         return view;
     }
@@ -91,6 +114,14 @@ public class FragmentAgregarReceta extends Fragment {
 
     ArrayList<Ingrediente> cargaingredientes(){
         ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
+        ingredientes.add(new Ingrediente("1","papa",100,4,unidades.GR.toString()));
+        ingredientes.add(new Ingrediente("2","choclo",100,3,unidades.GR.toString()));
+        ingredientes.add(new Ingrediente("1","papa",100,100,unidades.GR.toString()));
+        ingredientes.add(new Ingrediente("1","papa",100,100,unidades.GR.toString()));
+        ingredientes.add(new Ingrediente("1","papa",100,4,unidades.GR.toString()));
+        ingredientes.add(new Ingrediente("2","choclo",100,3,unidades.GR.toString()));
+        ingredientes.add(new Ingrediente("1","papa",100,100,unidades.GR.toString()));
+        ingredientes.add(new Ingrediente("1","papa",100,100,unidades.GR.toString()));
         ingredientes.add(new Ingrediente("1","papa",100,4,unidades.GR.toString()));
         ingredientes.add(new Ingrediente("2","choclo",100,3,unidades.GR.toString()));
         ingredientes.add(new Ingrediente("1","papa",100,100,unidades.GR.toString()));

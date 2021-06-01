@@ -8,6 +8,7 @@ public class Ingrediente {
     float precio;
     int cantidad;
     String unidad;
+    boolean sel;
 
 
     public Ingrediente() {}
@@ -18,6 +19,7 @@ public class Ingrediente {
         this.precio = precio;
         this.cantidad = cantidad;
         this.unidad = unidad;
+        this.sel = false;
     }
 
     public String getId() {
@@ -40,6 +42,8 @@ public class Ingrediente {
         return unidad;
     }
 
+    public boolean getSel (){return this.sel;}
+
     public void setId(String id) {
         this.id = id;
     }
@@ -59,4 +63,6 @@ public class Ingrediente {
     public void setUnidad(String unidad) {
         this.unidad = unidad;
     }
+
+    public void setSel (boolean s ){ this.sel=s;}
 }

@@ -8,7 +8,7 @@
     <string name="agregar_ingredientes">Agregar Ingredientes</string>
     <string name="agregar_receta">--- RECETA ---</string>
     <string name="nombre">nombre de receta:</string>
-    <string name="lista_ingredientes">lista ingredientes</string>
+    <string name="lista_ingredientes"> Lista ingredientes: </string>
     <string name="name">Name</string>
     <string name="todo">TODO</string>
     <string name="email">Email</string>

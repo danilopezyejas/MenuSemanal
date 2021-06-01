@@ -2,17 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:focusable="false">
+
 
 
     <AutoCompleteTextView
+
         android:id="@+id/ACnombre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="5"
-        android:hint="AutoCompleteTextView"
-        android:clickable="false"
-        android:focusable="false"/>
+
+        />
 
     <EditText
         android:id="@+id/EdCantidad"
@@ -22,9 +24,6 @@
         android:ems="10"
         android:hint="cantidad"
         android:inputType="number"
-        android:focusableInTouchMode="false"
-        android:focusable="false"
-        android:longClickable="false"
 
                />
 
@@ -36,5 +35,9 @@
 
         android:layout_height="wrap_content"
         android:layout_weight="1" />
-
+    <CheckBox
+        android:id="@+id/chkestado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+    />
 </LinearLayout>

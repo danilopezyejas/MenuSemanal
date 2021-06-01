@@ -2,6 +2,7 @@ package com.tip.MenuSemanal;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import Clases.Ingrediente;
 import Clases.Recetas;
 
+import static androidx.navigation.Navigation.findNavController;
 import static com.tip.MenuSemanal.R.color.*;
 import static com.tip.MenuSemanal.R.drawable.fondo_botones;
 import static com.tip.MenuSemanal.R.id.textView;
@@ -26,6 +28,8 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
 
     ArrayList<Recetas> listaRecetas;
     View viewant = null;
+    int posant =-1;
+    boolean multiselect = false;
     public AdapterListaReceta(@NonNull ArrayList<Recetas> lRecetas) {
         listaRecetas = lRecetas;
     }
@@ -39,13 +43,64 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_recetas, parent, false);
         return new ViewHoldersDatos(view);
     }
-
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull @NotNull AdapterListaReceta.ViewHoldersDatos holder, int position) {
         //holder.asignardatos(listaRecetas.get(position).getNombre(),listaRecetas.get(position).getDescripcion());
+        Recetas receta ;
         holder.asignardatos(listaRecetas.get(position));
 
-        final int p = position;
+        receta = listaRecetas.get(position);
+        holder.item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(multiselect==true)
+                    receta.setSel(!receta.getSel());
+                else{
+                    if (posant >-1){
+                        listaRecetas.get(posant).setSel(false);
+                        notifyItemChanged(posant);
+                    }
+                    receta.setSel(true);
+                    posant=position;
+
+                }
+                notifyItemChanged(position);
+                Bundle arg = new Bundle();
+
+                if (!multiselect) {
+                    arg.putString("param1", receta.getNombre());
+                    findNavController(holder.itemView).navigate(R.id.fragmentAgregarReceta, arg);
+                }
+            }
+        });
+
+        holder.item.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if (multiselect == true) {
+                    for (Recetas rec : listaRecetas) {
+                        rec.setSel(false);
+
+                    }
+                }
+                receta.setSel(true);
+                posant=position;
+                notifyDataSetChanged();
+                multiselect = !multiselect;
+                return true;
+            }
+        });
+
+        if(receta.getSel()==true){
+            if (multiselect == true)
+                holder.item.setBackgroundColor(Color.GRAY)                                                                                              ;
+            else
+                holder.item.setBackgroundColor(purple_200);
+        } else
+            holder.item.setBackgroundColor(Color.TRANSPARENT);
+
 
 
 
@@ -81,7 +136,8 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
     public class ViewHoldersDatos extends RecyclerView.ViewHolder {
         TextView txtnombre;
         TextView txtdescripcion;
-        View item;
+        public View item;
+
 
         public ViewHoldersDatos(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -89,21 +145,6 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
             txtnombre=itemView.findViewById(R.id.txtNombreReceta);
             txtdescripcion=itemView.findViewById(R.id.txtDescripcionReceta);
 
-            item.setOnClickListener(new View.OnClickListener() {
-                @SuppressLint("ResourceAsColor")
-                @Override
-                public void onClick(View v) {
-                    System.out.println("click");
-                    if (item!=viewant){
-                        item.setBackgroundColor (purple_200);
-                        if (viewant != null){
-                            viewant.setBackgroundColor(Color.TRANSPARENT);
-                        }
-                        viewant=item;
-                    }
-                    notifyDataSetChanged();
-                }
-            });
 
         }
 

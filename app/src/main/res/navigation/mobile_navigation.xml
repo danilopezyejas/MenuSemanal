@@ -53,4 +53,9 @@
             android:id="@+id/action_fragmentAgregarReceta_to_navigation_ingredientes"
             app:destination="@id/navigation_ingredientes" />
     </fragment>
+    <activity
+        android:id="@+id/authActivity"
+        android:name="com.tip.MenuSemanal.AuthActivity"
+        android:label="activity_auth"
+        tools:layout="@layout/activity_auth" />
 </navigation>

@@ -132,6 +132,18 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
             notifyItemRemoved(position);
         }
     }
+    public void removeSelected (){
+        ArrayList<Recetas> elim =new ArrayList<Recetas>();
+        for(Recetas ing: listaRecetas){
+            if(ing.getSel()==true){
+                elim.add(ing);
+            }
+        }
+        if(elim.size() > 0) {
+            listaRecetas.removeAll(elim);
+            notifyDataSetChanged();
+        }
+    }
 
     public class ViewHoldersDatos extends RecyclerView.ViewHolder {
         TextView txtnombre;
@@ -145,10 +157,6 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
             txtnombre=itemView.findViewById(R.id.txtNombreReceta);
             txtdescripcion=itemView.findViewById(R.id.txtDescripcionReceta);
 
-
-        }
-
-        public void bindView(){
 
         }
 

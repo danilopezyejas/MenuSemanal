@@ -7,8 +7,8 @@
     tools:context=".ui.home.HomeFragment">
 
     <ImageView
-        android:layout_width="378dp"
-        android:layout_height="350dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:src="@drawable/menu_semanal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

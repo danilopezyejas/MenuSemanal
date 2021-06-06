@@ -7,6 +7,10 @@ public class Recetas {
     String descripcion;
     boolean Sel;
 
+    public Recetas(){
+        super();
+    }
+
     public Recetas(String nombre, String descripcion) {
         this.nombre = nombre;
         this.descripcion = descripcion;

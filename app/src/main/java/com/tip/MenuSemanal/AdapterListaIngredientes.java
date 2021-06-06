@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import Clases.Ingrediente;
 import Clases.Recetas;
+import Enumeracion.unidades;
 
 import static androidx.core.content.ContextCompat.getCodeCacheDir;
 import static androidx.core.content.ContextCompat.getSystemService;
@@ -137,16 +138,26 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
     }
 
     public void removeSelected (){
+        ArrayList<Ingrediente> elim =new ArrayList<Ingrediente>();
         for(Ingrediente ing: listaIngrediente){
-            if(ing.getSel()==true){remove(ing);
+            if(ing.getSel()==true){
+                elim.add(ing);
             }
-
+        }
+        if(elim.size() > 0) {
+            listaIngrediente.removeAll(elim);
+            notifyDataSetChanged();
         }
     }
 
+    public void nuevoingrediente(){
+        listaIngrediente.add (new Ingrediente("","",0f,0, unidades.GR.toString()));
+        notifyDataSetChanged();
+    }
+
     public class ViewHoldersDatos extends RecyclerView.ViewHolder {
-        TextView edCantidad;
-        TextView acNombre;
+        EditText edCantidad;
+        AutoCompleteTextView acNombre;
         TextView txtUnidad;
         CheckBox chk;
         View item;
@@ -158,7 +169,7 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             acNombre = itemView.findViewById(R.id.ACnombre);
             edCantidad = itemView.findViewById(R.id.EdCantidad);
             txtUnidad = itemView.findViewById(R.id.txtUnidad);
-            //chk = itemView.findViewById(R.id.chkestado);
+
 
         }
 
@@ -169,14 +180,25 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             edCantidad.setText(Integer.toString(ingrediente.getCantidad()));
             txtUnidad.setText(ingrediente.getUnidad());
             posicion = position;
-//            chk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                @Override
-//                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//
-//                }
-//            });
+            edCantidad.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean b) {
+                    if(!b)
+                        ingrediente.setCantidad( Integer.parseInt(((EditText)view).getText().toString()));
+                }
+            });
+            acNombre.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean b) {
+                    if (!b)
+                        //if (!listaIngrediente.get(position).getNombre().equals(acNombre.getText().toString())) {
+                            ingrediente.setNombre( ((AutoCompleteTextView)view).getText().toString());
+                        //}
+                        //notifyItemChanged(position);
 
+                    }
+                    });
+                }
 
-        }
     }
 }

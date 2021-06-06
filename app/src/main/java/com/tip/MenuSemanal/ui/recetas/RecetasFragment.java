@@ -2,9 +2,12 @@ package com.tip.MenuSemanal.ui.recetas;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,23 +57,7 @@ public class RecetasFragment extends Fragment {
         recetas.add(new Recetas("salsa de damasco","nada"));
         recetas.add(new Recetas("arroz con leche","nada"));
         recetas.add(new Recetas("pancito al guiso","nada"));
-        recetas.add(new Recetas("salsa de damasco","nada"));
-        recetas.add(new Recetas("arroz con leche","nada"));
-        recetas.add(new Recetas("pancito al guiso","nada"));
-        recetas.add(new Recetas("salsa de damasco","nada"));
-        recetas.add(new Recetas("arroz con leche","nada"));
-        recetas.add(new Recetas("pancito al guiso","nada"));
-        recetas.add(new Recetas("arroz con leche","nada"));
-        recetas.add(new Recetas("pancito al guiso","nada"));
-        recetas.add(new Recetas("arroz con leche","nada"));
-        recetas.add(new Recetas("pancito al guiso","nada"));
-        recetas.add(new Recetas("arroz con leche","nada"));
-        recetas.add(new Recetas("pancito al guiso","nada"));
-        recetas.add(new Recetas("arroz con leche","nada"));
-        recetas.add(new Recetas("pancito al guiso","nada"));
-        recetas.add(new Recetas("arroz con leche","nada"));
-        recetas.add(new Recetas("pancito al guiso","nada"));
-        recetas.add(new Recetas("arroz con leche","nada"));
+
         recetas.add(new Recetas("ultimo","nada"));
 
 
@@ -87,8 +75,10 @@ public class RecetasFragment extends Fragment {
 
                // recetas.clear();
                 for(DataSnapshot recetasDataSnap : snapshot.getChildren()){
-                    Recetas receta = recetasDataSnap.getValue(Recetas.class);
-                    recetas.add(receta);
+
+                    String nomreceta = recetasDataSnap.getKey();
+                    String descrip = "ll";//recetasDataSnap.child("descripcion").getKey();//recetas.add(receta);
+                    recetas.add(new Recetas(nomreceta,descrip));
                 }
             }
 
@@ -103,7 +93,7 @@ public class RecetasFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(new AdapterListaReceta(recetas));
-        //recyclerView.getAdapter().notifyDataSetChanged();
+        recyclerView.getAdapter().notifyDataSetChanged();
 
 
         recetasViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
@@ -115,8 +105,10 @@ public class RecetasFragment extends Fragment {
             btnA.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Bundle b = new Bundle();
+                    b.putString("param1","nuevo");
 
-                    findNavController(view).navigate(R.id.fragmentAgregarReceta);
+                    findNavController(view).navigate(R.id.fragmentAgregarReceta,b);
                 }
 
         });
@@ -126,4 +118,7 @@ public class RecetasFragment extends Fragment {
 
         return root;
     }
+
+
+
 }

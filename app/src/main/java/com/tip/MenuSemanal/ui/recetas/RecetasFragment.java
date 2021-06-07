@@ -71,7 +71,9 @@ public class RecetasFragment extends Fragment {
                 for(DataSnapshot recetasDataSnap : snapshot.getChildren()){
                     String nomreceta = recetasDataSnap.getKey();
 
-                    String descrip =  recetasDataSnap.child("Descripcion").getValue().toString();//recetas.add(receta);
+                    String descrip = "";
+                    if(recetasDataSnap.child("Descripcion").getValue()!=null)
+                        descrip = recetasDataSnap.child("Descripcion").getValue().toString();//recetas.add(receta);
                     recetas.add(new Recetas(nomreceta,descrip));
 
                 }

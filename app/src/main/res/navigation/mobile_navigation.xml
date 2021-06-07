@@ -50,8 +50,8 @@
         android:label="fragment_agregar_receta"
         tools:layout="@layout/fragment_agregar_receta" >
         <action
-            android:id="@+id/action_fragmentAgregarReceta_to_navigation_ingredientes"
-            app:destination="@id/navigation_ingredientes" />
+            android:id="@+id/action_fragmentAgregarReceta_to_navigation_recetas"
+            app:destination="@id/navigation_recetas" />
     </fragment>
     <activity
         android:id="@+id/authActivity"

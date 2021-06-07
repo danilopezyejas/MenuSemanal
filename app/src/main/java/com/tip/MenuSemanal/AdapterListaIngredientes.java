@@ -19,6 +19,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -31,17 +33,7 @@ import static androidx.core.content.ContextCompat.getCodeCacheDir;
 import static androidx.core.content.ContextCompat.getSystemService;
 import static com.tip.MenuSemanal.R.color.purple_200;
 import static com.tip.MenuSemanal.R.color.purple_700;
-//
-//class EstadoIng{
-//    Ingrediente ingrediente;
-//    boolean seleccionado;
-//    boolean borrado;
-//    public EstadoIng(Ingrediente i,Boolean sel, Boolean borr){
-//        ingrediente= i;
-//        seleccionado= sel;
-//        borrado = borr;
-//    }
-//}
+
 
 
 public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaIngredientes.ViewHoldersDatos> {
@@ -69,6 +61,7 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull @NotNull AdapterListaIngredientes.ViewHoldersDatos holder, int position) {
+
 
         Ingrediente ing = listaIngrediente.get(position);
 
@@ -211,6 +204,8 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
                     if (!b)
                         //if (!listaIngrediente.get(position).getNombre().equals(acNombre.getText().toString())) {
                             ingrediente.setNombre( ((AutoCompleteTextView)view).getText().toString());
+
+
                         //}
                         //notifyItemChanged(position);
 

@@ -36,15 +36,6 @@
                     android:gravity="center"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageButton
-                    android:id="@+id/btnAceptarIngredientes"
-                    style="@android:style/Widget.Holo.ImageButton"
-                    android:layout_width="46dp"
-                    android:layout_height="43dp"
-                    android:layout_gravity="right"
-                    android:layout_weight="1"
-                    android:src="@drawable/ic_baseline_done_24" />
-
             </LinearLayout>
 
             <TextView
@@ -98,7 +89,8 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/lista_ingredientes"
                     android:textAlignment="center"
-                    android:textSize="35sp" />
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="30sp" />
 
                 <Space
                     android:layout_width="10dp"
@@ -108,7 +100,7 @@
                 <ImageButton
                     android:id="@+id/btnBorraring"
                     style="@android:style/Widget.DeviceDefault.ImageButton"
-                    android:layout_width="59dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:baselineAlignBottom="false"
@@ -120,6 +112,15 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:src="@android:drawable/ic_input_add" />
+
+                <ImageButton
+                    android:id="@+id/btnAceptarIngredientes"
+                    style="@android:style/Widget.DeviceDefault.ImageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_baseline_done_24" />
 
             </LinearLayout>
 

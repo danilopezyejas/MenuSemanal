@@ -191,7 +191,9 @@ public class FragmentAgregarReceta extends Fragment {
 
                 listaIngredientes.clear();
 
-                edDescripcion.setText(snapshot.child("Descripcion").getValue().toString());
+                if(snapshot.child("Descripcion").getValue()!=null){
+                    edDescripcion.setText(snapshot.child("Descripcion").getValue().toString()); }
+                //
                 for(DataSnapshot ingredientesDataSnap : snapshot.getChildren()){
                     if (!ingredientesDataSnap.getKey().equals("Descripcion")){
                     Ingrediente ingrediente = ingredientesDataSnap.getValue(Ingrediente.class);

@@ -54,13 +54,6 @@ public class RecetasFragment extends Fragment {
 
         recetas = new ArrayList<Recetas>();
 
-        recetas.add(new Recetas("salsa de damasco","nada"));
-        recetas.add(new Recetas("arroz con leche","nada"));
-        recetas.add(new Recetas("pancito al guiso","nada"));
-
-        recetas.add(new Recetas("ultimo","nada"));
-
-
         recetasViewModel =
                 new ViewModelProvider(this).get(RecetasViewModel.class);
         View root = inflater.inflate(R.layout.fragment_recetas, container, false);
@@ -74,18 +67,22 @@ public class RecetasFragment extends Fragment {
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
 
                // recetas.clear();
-                for(DataSnapshot recetasDataSnap : snapshot.getChildren()){
 
+                for(DataSnapshot recetasDataSnap : snapshot.getChildren()){
                     String nomreceta = recetasDataSnap.getKey();
-                    String descrip = "ll";//recetasDataSnap.child("descripcion").getKey();//recetas.add(receta);
+
+                    String descrip =  recetasDataSnap.child("Descripcion").getValue().toString();//recetas.add(receta);
                     recetas.add(new Recetas(nomreceta,descrip));
+
                 }
+                recyclerView.getAdapter().notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull @NotNull DatabaseError error) {
 
             }
+
         });
 
         recyclerView = (RecyclerView) root.findViewById(R.id.rvlistaRecetas);
@@ -112,8 +109,6 @@ public class RecetasFragment extends Fragment {
                 }
 
         });
-
-
 
 
         return root;

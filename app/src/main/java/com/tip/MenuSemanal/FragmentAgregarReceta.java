@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ import com.tip.MenuSemanal.ui.recetas.RecetasFragment;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import Clases.Ingrediente;
 import Enumeracion.unidades;
@@ -45,6 +47,8 @@ import static androidx.navigation.Navigation.findNavController;
  * Use the {@link FragmentAgregarReceta#newInstance} factory method to
  * create an instance of this fragment.
  */
+
+
 public class FragmentAgregarReceta extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -60,6 +64,7 @@ public class FragmentAgregarReceta extends Fragment {
     ImageButton btnBorrar;
     ImageButton btnAceptar;
     RecyclerView recyclerView;
+    EditText edDescripcion;
     ArrayList<Ingrediente> listaIngredientes = new ArrayList<Ingrediente>();
 
 
@@ -105,6 +110,7 @@ public class FragmentAgregarReceta extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_agregar_receta, container, false);
         TextView txtnombrer =(TextView) view.findViewById(R.id.edNombreReceta);
+        edDescripcion =(EditText) view.findViewById(R.id.edDescripcion);
         txtUnidad = (TextView) view.findViewById(R.id.txtUnidad);
         btnagregar= (ImageButton) view.findViewById(R.id.btnAgregaring);
         btnBorrar = (ImageButton) view.findViewById(R.id.btnBorraring);
@@ -121,38 +127,57 @@ public class FragmentAgregarReceta extends Fragment {
         btnagregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((AdapterListaIngredientes)recyclerView.getAdapter()).nuevoingrediente();
+                ((AdapterListaIngredientes) Objects.requireNonNull(recyclerView.getAdapter())).nuevoingrediente();
             }
         });
 
         btnBorrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((AdapterListaIngredientes)recyclerView.getAdapter()).removeSelected();
+                for(Ingrediente ing : listaIngredientes){
+                    if (ing.getSel())
+                        db.child("Recetas").child(txtnombrer.getText().toString()).child(ing.getNombre().toString()).removeValue();
+
+                }
+
+                ((AdapterListaIngredientes) Objects.requireNonNull(recyclerView.getAdapter())).removeSelected();
 
             }
         });
 
             btnAceptar.setOnClickListener(new View.OnClickListener() {
+
                 @Override
                 public void onClick(View view) {
-                    for(Ingrediente i : listaIngredientes){
-                        //Toast.makeText(getActivity(),i.getNombre(),Toast.LENGTH_SHORT).show();
-                        if(i.getNombre()!=""){
-                        db.child("Recetas").child(txtnombrer.getText().toString()).child(i.getNombre()).setValue(i).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull @NotNull Task<Void> task2) {
-                                //Compruebo si se agrego bien a la base
-                                if(task2.isComplete()){
+                    String nombreReceta = txtnombrer.getText().toString();
+                    if (!nombreReceta.equals("")) {
+                        db.child("Recetas").child(txtnombrer.getText().toString()).child("Descripcion").setValue(edDescripcion.getText().toString());
 
-                                }else{
-                                    Toast.makeText(getActivity(),"Ocurrio un error!",Toast.LENGTH_SHORT).show();
+                        for (Ingrediente i : listaIngredientes) {
+                            //Toast.makeText(getActivity(),i.getNombre(),Toast.LENGTH_SHORT).show();
+                            if (!i.getNombre().equals("")) {
+                                System.out.println(i.getNombre() + " " + i.getCantidad());
+
+                                db.child("Recetas").child(txtnombrer.getText().toString()).child(i.getNombre()).setValue(i).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull @NotNull Task<Void> task2) {
+                                        //Compruebo si se agrego bien a la base
+                                        if (task2.isComplete()) {
+
+                                        } else {
+                                            Toast.makeText(getActivity(), "Ocurrio un error!", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
-                                }
-                            });
-                    }}
+                                });
+                            }
+                        }
 
+                    } else
+                    {
+                        Toast.makeText(getActivity(),"Ingrese nombre de receta",Toast.LENGTH_LONG).show();
+                    }
                 }
+
         });
         return view;
     }
@@ -165,10 +190,13 @@ public class FragmentAgregarReceta extends Fragment {
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
 
                 listaIngredientes.clear();
+
+                edDescripcion.setText(snapshot.child("Descripcion").getValue().toString());
                 for(DataSnapshot ingredientesDataSnap : snapshot.getChildren()){
+                    if (!ingredientesDataSnap.getKey().equals("Descripcion")){
                     Ingrediente ingrediente = ingredientesDataSnap.getValue(Ingrediente.class);
                     listaIngredientes.add(ingrediente);
-                }
+                }}
                 recyclerView.getAdapter().notifyDataSetChanged();
             }
 

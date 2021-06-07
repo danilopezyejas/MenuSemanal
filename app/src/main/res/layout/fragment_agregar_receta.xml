@@ -63,7 +63,8 @@
                 android:layout_marginTop="10dp"
                 android:background="#FFC107"
                 android:inputType="textPersonName"
-                android:textSize="25sp" />
+                android:textSize="25sp"
+                android:hint="ingrese nombre de receta"/>
 
 
             <TextView
@@ -82,7 +83,7 @@
                 android:ems="10"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
-
+                android:hint="ingrese descripcion"
                 android:textSize="20sp" />
 
             <LinearLayout

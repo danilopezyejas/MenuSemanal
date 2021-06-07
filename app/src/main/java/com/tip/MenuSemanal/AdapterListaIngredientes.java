@@ -31,6 +31,17 @@ import static androidx.core.content.ContextCompat.getCodeCacheDir;
 import static androidx.core.content.ContextCompat.getSystemService;
 import static com.tip.MenuSemanal.R.color.purple_200;
 import static com.tip.MenuSemanal.R.color.purple_700;
+//
+//class EstadoIng{
+//    Ingrediente ingrediente;
+//    boolean seleccionado;
+//    boolean borrado;
+//    public EstadoIng(Ingrediente i,Boolean sel, Boolean borr){
+//        ingrediente= i;
+//        seleccionado= sel;
+//        borrado = borr;
+//    }
+//}
 
 
 public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaIngredientes.ViewHoldersDatos> {
@@ -180,13 +191,20 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             edCantidad.setText(Integer.toString(ingrediente.getCantidad()));
             txtUnidad.setText(ingrediente.getUnidad());
             posicion = position;
+
             edCantidad.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View view, boolean b) {
                     if(!b)
-                        ingrediente.setCantidad( Integer.parseInt(((EditText)view).getText().toString()));
+                        try {
+                            ingrediente.setCantidad(Integer.parseInt(((EditText) view).getText().toString()));
+                        } catch (NumberFormatException e) {
+                            ingrediente.setCantidad(0);
+                        }
                 }
             });
+
+
             acNombre.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View view, boolean b) {

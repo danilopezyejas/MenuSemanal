@@ -6,10 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".AgregarIngredientes">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="15dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,28 +42,23 @@
                     android:inputType="textShortMessage|textPersonName" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center">
 
-                    <ImageButton
-                        android:id="@+id/idMicroIngre"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_microfono"/>
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/idMicroIngre"
+                        android:layout_width="100sp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="..."
                         android:textSize="30sp"
                         android:padding="0dp"
-                        android:layout_marginTop="0dp"/>
-
+                        android:layout_marginTop="0dp"
+                        android:drawableTop="@drawable/ic_microfono"
+                        android:drawablePadding="-25dp"/>
                 </LinearLayout>
-
-
             </LinearLayout>
 
             <EditText
@@ -102,15 +102,10 @@
                 android:id="@+id/btnAceptarIngredientes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="bottom"
+                android:gravity="center"
                 android:text="Agregar"
-                android:layout_marginBottom="100dp"/>
-
+                android:layout_marginBottom="100dp"
+                android:theme="@style/Botones"/>
         </LinearLayout>
-
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </FrameLayout>

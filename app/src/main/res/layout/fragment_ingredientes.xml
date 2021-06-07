@@ -33,5 +33,6 @@
         android:src="@android:drawable/ic_input_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="OnClick" />
+        tools:ignore="OnClick"
+        android:backgroundTint="@color/yellow"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

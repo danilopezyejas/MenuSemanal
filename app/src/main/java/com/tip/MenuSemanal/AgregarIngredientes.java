@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -113,7 +114,7 @@ public class AgregarIngredientes extends Fragment {
         unidadSelecionada.setAdapter(u);
         etNombre = view.findViewById(R.id.nombreIngrediente);
 
-        ImageButton micro = (ImageButton) view.findViewById(R.id.idMicroIngre);
+        TextView micro = (TextView) view.findViewById(R.id.idMicroIngre);
         micro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

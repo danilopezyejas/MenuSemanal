@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,16 +20,18 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 import Clases.Ingrediente;
-import Clases.Recetas;
 import Enumeracion.unidades;
 
 import static com.tip.MenuSemanal.R.color.purple_200;
+
 
 
 public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaIngredientes.ViewHoldersDatos> {
 
     ArrayList<Ingrediente> listaIngrediente;
     View viewant = null;
+    boolean multiselect = false;
+    int posant =-1;
     public AdapterListaIngredientes(@NonNull ArrayList<Ingrediente> lingrediente) {
         listaIngrediente=lingrediente;
     }
@@ -42,37 +43,63 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
 
     public AdapterListaIngredientes.ViewHoldersDatos onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_lista_ingredientes, parent, false);
+
         return new ViewHoldersDatos(view);
     }
 
+
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull @NotNull AdapterListaIngredientes.ViewHoldersDatos holder, int position) {
-        holder.asignardatos(listaIngrediente.get(position));
+
+        Ingrediente ing = listaIngrediente.get(position);
+
+        holder.asignardatos(listaIngrediente.get(position),position);
 
         holder.item.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
-                System.out.println("click");
-                if (holder.item!=viewant){
-                        System.out.println("set on");
 
-                            holder.item.setBackgroundColor (purple_200);
-                             //holder.itemView.setAlpha(0.5f);
-                        if (viewant != null){
-
-                            //viewant.setAlpha(1f);
-
-                              viewant.setBackgroundColor(Color.TRANSPARENT);
-                        }
-                        viewant=holder.item;
+                if(multiselect==true)
+                    ing.setSel(!ing.getSel());
+                else{
+                    if (posant >-1){
+                        listaIngrediente.get(posant).setSel(false);
+                        notifyItemChanged(posant);
                     }
-                   notifyDataSetChanged();
+                    ing.setSel(true);
+                    posant=position;
+
                 }
-
-
-
+                notifyItemChanged(position);
+            }
         });
+
+        holder.item.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if (multiselect == true) {
+                    for (Ingrediente ingr : listaIngrediente) {
+                        ingr.setSel(false);
+
+                    }
+                }
+                ing.setSel(true);
+                posant=position;
+                notifyDataSetChanged();
+                multiselect = !multiselect;
+                return true;
+            }
+        });
+
+        if(ing.getSel()==true){
+            if (multiselect == true)
+                holder.item.setBackgroundColor(Color.GRAY)                                                                                              ;
+            else
+                holder.item.setBackgroundColor(purple_200);
+        } else
+            holder.item.setBackgroundColor(Color.TRANSPARENT);
+
 
     }
 
@@ -121,7 +148,6 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
         notifyDataSetChanged();
     }
 
-
     public class ViewHoldersDatos extends RecyclerView.ViewHolder {
         EditText edCantidad;
         AutoCompleteTextView acNombre;
@@ -136,14 +162,43 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             acNombre = itemView.findViewById(R.id.ACnombre);
             edCantidad = itemView.findViewById(R.id.EdCantidad);
             txtUnidad = itemView.findViewById(R.id.txtUnidad);
+
+
         }
 
+        @SuppressLint("ResourceAsColor")
 
-        public void asignardatos(Ingrediente ingrediente) {
+        public void asignardatos(@NotNull Ingrediente ingrediente, int position) {
             acNombre.setText(ingrediente.getNombre());
             edCantidad.setText(Integer.toString(ingrediente.getCantidad()));
+            txtUnidad.setText(ingrediente.getUnidad());
+            posicion = position;
+
+            edCantidad.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean b) {
+                    if(!b)
+                    try {
+                        ingrediente.setCantidad(Integer.parseInt(((EditText) view).getText().toString()));
+                    } catch (NumberFormatException e) {
+                        ingrediente.setCantidad(0);
+                    }
+                }
+            });
 
 
+            acNombre.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean b) {
+                    if (!b)
+                        //if (!listaIngrediente.get(position).getNombre().equals(acNombre.getText().toString())) {
+                        ingrediente.setNombre( ((AutoCompleteTextView)view).getText().toString());
+                    //}
+                    //notifyItemChanged(position);
+
+                }
+            });
         }
+
     }
 }

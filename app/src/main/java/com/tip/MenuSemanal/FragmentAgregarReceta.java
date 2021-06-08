@@ -98,7 +98,7 @@ public class FragmentAgregarReceta extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-//            Toast.makeText(getContext(),mParam1,Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(),mParam1,Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -166,7 +166,7 @@ public class FragmentAgregarReceta extends Fragment {
                                         if (task2.isComplete()) {
 
                                         } else {
-//                                            Toast.makeText(getActivity(), "Ocurrio un error!", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getActivity(), "Ocurrio un error!", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
@@ -175,7 +175,7 @@ public class FragmentAgregarReceta extends Fragment {
 
                     } else
                     {
-//                        Toast.makeText(getActivity(),"Ingrese nombre de receta",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(),"Ingrese nombre de receta",Toast.LENGTH_LONG).show();
                     }
                 }
 

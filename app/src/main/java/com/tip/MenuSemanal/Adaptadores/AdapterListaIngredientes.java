@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 
 import Clases.Ingrediente;
 import Clases.Recetas;
+import Enumeracion.unidades;
 
 import static com.tip.MenuSemanal.R.color.purple_200;
 
@@ -101,18 +103,39 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
         }
     }
 
+    public void removeSelected (){
+        ArrayList<Ingrediente> elim =new ArrayList<Ingrediente>();
+        for(Ingrediente ing: listaIngrediente){
+            if(ing.getSel()==true){
+                elim.add(ing);
+            }
+        }
+        if(elim.size() > 0) {
+            listaIngrediente.removeAll(elim);
+            notifyDataSetChanged();
+        }
+    }
+
+    public void nuevoingrediente(){
+        listaIngrediente.add (new Ingrediente("","",0f,0, unidades.GR.toString()));
+        notifyDataSetChanged();
+    }
+
+
     public class ViewHoldersDatos extends RecyclerView.ViewHolder {
         EditText edCantidad;
         AutoCompleteTextView acNombre;
-        Spinner spUnidad;
+        TextView txtUnidad;
+        CheckBox chk;
         View item;
+        int posicion;
 
         public ViewHoldersDatos(@NonNull @NotNull View itemView) {
             super(itemView);
-            this.item= itemView;
-            acNombre=itemView.findViewById(R.id.ACnombre);
-            edCantidad=itemView.findViewById(R.id.EdCantidad);
-            spUnidad=itemView.findViewById(R.id.SpUnidad);
+            this.item = itemView;
+            acNombre = itemView.findViewById(R.id.ACnombre);
+            edCantidad = itemView.findViewById(R.id.EdCantidad);
+            txtUnidad = itemView.findViewById(R.id.txtUnidad);
         }
 
 

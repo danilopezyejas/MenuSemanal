@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -162,7 +163,6 @@ public class FragmentAgregarReceta extends Fragment {
                                     public void onComplete(@NonNull @NotNull Task<Void> task2) {
                                         //Compruebo si se agrego bien a la base
                                         if (task2.isComplete()) {
-
                                         } else {
                                             Toast.makeText(getActivity(), "Ocurrio un error!", Toast.LENGTH_SHORT).show();
                                         }
@@ -170,6 +170,7 @@ public class FragmentAgregarReceta extends Fragment {
                                 });
                             }
                         }
+                        Navigation.findNavController(view).navigate(R.id.action_fragmentAgregarReceta_to_navigation_recetas);
 
                     } else
                     {

@@ -1,7 +1,6 @@
-package com.tip.MenuSemanal;
+package com.tip.MenuSemanal.Adaptadores;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,17 +10,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.tip.MenuSemanal.R;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-import Clases.Ingrediente;
 import Clases.Recetas;
 
 import static androidx.navigation.Navigation.findNavController;
 import static com.tip.MenuSemanal.R.color.*;
-import static com.tip.MenuSemanal.R.drawable.fondo_botones;
-import static com.tip.MenuSemanal.R.id.textView;
 
 
 public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.ViewHoldersDatos> {

@@ -160,10 +160,10 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
 
         }
 
-        public void asignardatos(String nombre, String descripcion) {
-            txtnombre.setText(nombre);
-            txtdescripcion.setText(descripcion);
-        }
+//        public void asignardatos(String nombre, String descripcion) {
+//            txtnombre.setText(nombre);
+//            txtdescripcion.setText(descripcion);
+//        }
         public void asignardatos(Recetas receta) {
             txtnombre.setText(receta.getNombre());
             txtdescripcion.setText(receta.getDescripcion());

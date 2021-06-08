@@ -1,18 +1,24 @@
 package com.tip.MenuSemanal.ui.ingredientes;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,7 +41,10 @@ public class IngredientesFragment extends Fragment {
     private RecyclerView recyclerView;
     private AdapterDatosIngredientes adapterDatosIngredientes;
     private  ArrayList<Ingrediente> listaIngredientes;
+    private  ArrayList<Ingrediente> aBorrar;
     private DatabaseReference db;
+    ProgressBar progressBar;
+    FloatingActionButton btnAgregarIngrediente;
 
     private  TextView textView;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -44,6 +53,7 @@ public class IngredientesFragment extends Fragment {
 
         recyclerView = root.findViewById(R.id.recycleIngredientes);
         listaIngredientes = new ArrayList<>();
+        aBorrar = new ArrayList<>();
 
         //Obtengo de la base la tabla Ingredientes
         db = FirebaseDatabase.getInstance().getReference("Ingredientes");
@@ -68,11 +78,32 @@ public class IngredientesFragment extends Fragment {
         });
 
 
-        FloatingActionButton btnAgregarIngrediente = root.findViewById(R.id.btnAgregarIngredientes);
+        btnAgregarIngrediente = root.findViewById(R.id.btnAgregarIngredientes);
         btnAgregarIngrediente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                findNavController(view).navigate(R.id.agregarIngredientes);
+//        Pregunto que icono tiene el boton
+                Integer resource = (Integer)btnAgregarIngrediente.getTag();
+                if (resource != null && resource != R.drawable.ic_agregar){
+                    aBorrar = adapterDatosIngredientes.getIngreBorrar();
+                    for (Ingrediente ingre : aBorrar) {
+                        db.child(ingre.getId()).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>(){
+                            @Override
+                            public void onComplete(@NonNull @NotNull Task<Void> task) {
+//          Si se borro bien cambio el icono del boton
+                                if(task.isComplete()){
+                                    btnAgregarIngrediente.setImageResource(R.drawable.ic_agregar);
+                                    btnAgregarIngrediente.setTag(R.drawable.ic_agregar);
+                                    Toast.makeText(getActivity(),"Se borro "+ingre.getNombre(),Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(getActivity(),"Ocurrio un error!",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                }else {
+                    findNavController(view).navigate(R.id.agregarIngredientes);
+                }
             }
         });
 
@@ -86,7 +117,7 @@ public class IngredientesFragment extends Fragment {
 //    Mando la lista que descargue de la base al Adapter para que lo muestre en el recycler
     private  void mostrar(){
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapterDatosIngredientes = new AdapterDatosIngredientes(listaIngredientes);
+        adapterDatosIngredientes = new AdapterDatosIngredientes(listaIngredientes, btnAgregarIngrediente, getContext());
         recyclerView.setAdapter(adapterDatosIngredientes);
     }
 

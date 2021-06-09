@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import Clases.Ingrediente;
 import Clases.Recetas;
 
 import static androidx.navigation.Navigation.findNavController;
@@ -94,6 +96,7 @@ public class RecetasFragment extends Fragment {
                     public void onChanged(@Nullable String s) {
                         // .. textView.setText(s);
                     }});
+
             FloatingActionButton btnA = root.findViewById(R.id.btnAgregarReceta);
             btnA.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -105,6 +108,20 @@ public class RecetasFragment extends Fragment {
                 }
 
         });
+
+            FloatingActionButton btnE = root.findViewById(R.id.btnEliminarReceta);
+            btnE.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    for(Recetas res: recetas){
+                        if (res.getSel()) {
+                            db.child(res.getNombre()).removeValue();
+                        }
+                    }
+                    ((AdapterListaReceta)recyclerView.getAdapter()).removeSelected();
+
+                }
+            });
 
 
         return root;

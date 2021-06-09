@@ -77,7 +77,6 @@ public class IngredientesFragment extends Fragment {
             }
         });
 
-
         btnAgregarIngrediente = root.findViewById(R.id.btnAgregarIngredientes);
         btnAgregarIngrediente.setOnClickListener(new View.OnClickListener() {
             @Override

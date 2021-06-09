@@ -86,6 +86,7 @@ public class AdapterDatosIngredientes extends RecyclerView.Adapter<AdapterDatosI
                 Bundle arg = new Bundle();
 
                 if (!multiselect) {
+                    arg.putString("id", listaIngredientes.get(position).getId());
                     arg.putString("paramNom", listaIngredientes.get(position).getNombre());
                     arg.putString("paramPre", String.valueOf(listaIngredientes.get(position).getPrecio()));
                     arg.putString("paramUni", listaIngredientes.get(position).getUnidad());

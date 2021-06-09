@@ -56,11 +56,13 @@ public class AgregarIngredientes extends Fragment {
     private static final String ARG_PRECIO = "paramPre";
     private static final String ARG_CANTIDAD = "paramCant";
     private static final String ARG_UNIDAD = "paramUni";
+    private static final String ARG_ID = "id";
 
     private String paramNom;
     private String paramPre;
     private String paramCant;
     private String paramUni;
+    private String id;
 
     private Spinner unidadSelecionada;
 
@@ -72,6 +74,7 @@ public class AgregarIngredientes extends Fragment {
     private EditText etPrecio;
     EditText etCantidad;
     Spinner spUnidad;
+    Button agregar;
 
     public AgregarIngredientes() {
         // Required empty public constructor
@@ -85,16 +88,18 @@ public class AgregarIngredientes extends Fragment {
      * @param paramPre Parameter 2.
      * @param paramCant Parameter 3.
      * @param paramUni Parameter 4.
+     *  @param id Parameter 4.
      * @return A new instance of fragment AgregarIngredientes.
      */
     // TODO: Rename and change types and number of parameters
-    public static AgregarIngredientes newInstance(String paramNom, String paramPre, String paramCant, String paramUni) {
+    public static AgregarIngredientes newInstance(String paramNom, String paramPre, String paramCant, String paramUni, String id) {
         AgregarIngredientes fragment = new AgregarIngredientes();
         Bundle args = new Bundle();
         args.putString(ARG_NOMBRE, paramNom);
         args.putString(ARG_PRECIO, paramPre);
         args.putString(ARG_CANTIDAD, paramCant);
         args.putString(ARG_UNIDAD, paramUni);
+        args.putString(ARG_ID, id);
         fragment.setArguments(args);
 
         return fragment;
@@ -108,6 +113,7 @@ public class AgregarIngredientes extends Fragment {
             paramPre = getArguments().getString(ARG_PRECIO);
             paramCant = getArguments().getString(ARG_CANTIDAD);
             paramUni = getArguments().getString(ARG_UNIDAD);
+            id = getArguments().getString(ARG_ID);
         }
     }
 
@@ -141,40 +147,59 @@ public class AgregarIngredientes extends Fragment {
             }
         });
 
-        Button agregar = (Button) view.findViewById(R.id.btnAceptarIngredientes);
+        agregar = (Button) view.findViewById(R.id.btnAceptarIngredientes);
+        if (getArguments() != null) {
+            agregar.setText("Modificar");
+        }
         agregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                if (agregar.getText().equals("Agregar")) {
+                    //Me aseguro de que el usuario alla completado todos los campos
+                    if (!isEmpty(etNombre) && !isEmpty(etPrecio) && !isEmpty(etCantidad)) {
+                        String nombre = etNombre.getText().toString();
+                        float precio = Float.parseFloat(etPrecio.getText().toString());
+                        int cantidad = Integer.parseInt(etCantidad.getText().toString());
+                        String unidad = spUnidad.getSelectedItem().toString();
 
-                //Me aseguro de que el usuario alla completado todos los campos
-                if (!isEmpty(etNombre)&&!isEmpty(etPrecio)&&!isEmpty(etCantidad)){
-                    String nombre = etNombre.getText().toString();
-                    float precio = Float.parseFloat(etPrecio.getText().toString());
-                    int cantidad = Integer.parseInt(etCantidad.getText().toString());
-                    String unidad = spUnidad.getSelectedItem().toString();
+                        //Creo el id (me lo proporciona firebase)
+                        String idIngrediente = db.push().getKey();
 
-                    //Creo el id (me lo proporciona firebase)
-                    String idIngrediente = db.push().getKey();
+                        Ingrediente newIngrediente = new Ingrediente(idIngrediente, nombre, precio, cantidad, unidad);
 
-                    Ingrediente newIngrediente = new Ingrediente(idIngrediente,nombre,precio,cantidad,unidad);
+                        //lo agrego a la base de datos
 
-                    //lo agrego a la base de datos
-
-                    db.child("Ingredientes").child(idIngrediente).setValue(newIngrediente).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        db.child("Ingredientes").child(idIngrediente).setValue(newIngrediente).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull @NotNull Task<Void> task2) {
+                                //Compruebo si se agrego bien a la base
+                                if (task2.isComplete()) {
+                                    Navigation.findNavController(view).navigate(R.id.ir_a_altaIngredientes);
+                                    closeKeyBoard(view);
+                                } else {
+                                    Toast.makeText(getActivity(), "Ocurrio un error!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    } else {
+                        Toast.makeText(getActivity(), "Debe completar todos los campos!", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Ingrediente newIngrediente = new Ingrediente(id, paramNom, Float.parseFloat(paramPre), Integer.parseInt(paramCant), paramUni);
+                    db.child(id).setValue(newIngrediente).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
-                        public void onComplete(@NonNull @NotNull Task<Void> task2) {
-                           //Compruebo si se agrego bien a la base
-                            if(task2.isComplete()){
+                        public void onComplete(@NonNull @NotNull Task<Void> task3) {
+                            //Compruebo si se agrego bien a la base
+                            if (task3.isComplete()) {
                                 Navigation.findNavController(view).navigate(R.id.ir_a_altaIngredientes);
-                                closeKeyBoard( view);
-                            }else{
-                                Toast.makeText(getActivity(),"Ocurrio un error!",Toast.LENGTH_SHORT).show();
+                                closeKeyBoard(view);
+                                Toast.makeText(getActivity(), "Se modifico!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), "Ocurrio un error!", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
-                } else {
-                    Toast.makeText(getActivity(),"Debe completar todos los campos!",Toast.LENGTH_SHORT).show();
                 }
             }
         });

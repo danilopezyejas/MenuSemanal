@@ -62,7 +62,7 @@ public class RecetasFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
 
-               // recetas.clear();
+                recetas.clear();
 
                 for(DataSnapshot recetasDataSnap : snapshot.getChildren()){
                     String nomreceta = recetasDataSnap.getKey();

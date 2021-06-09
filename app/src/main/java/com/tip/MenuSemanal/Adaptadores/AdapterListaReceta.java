@@ -130,6 +130,7 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
             notifyItemRemoved(position);
         }
     }
+
     public void removeSelected (){
         ArrayList<Recetas> elim =new ArrayList<Recetas>();
         for(Recetas ing: listaRecetas){

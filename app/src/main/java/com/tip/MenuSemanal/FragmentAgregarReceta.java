@@ -91,7 +91,7 @@ public class FragmentAgregarReceta extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-            Toast.makeText(getContext(),mParam1,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(),mParam1,Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -144,12 +144,15 @@ public class FragmentAgregarReceta extends Fragment {
                 @Override
                 public void onClick(View view) {
                     String nombreReceta = txtnombrer.getText().toString();
+                   // edDescripcion.setFocusable(View.FOCUSABLE);
+
 
                     if (!nombreReceta.equals("")) {
 
                         if(!mParam1.equals(nombreReceta)){
-                            db.child("Recetas").child(mParam1).removeValue();
-                        };
+                           // db.child("Recetas").child(mParam1).removeValue();
+                        }//else
+                            //db.child("Recetas").child(nombreReceta).removeValue();
 
                         db.child("Recetas").child(nombreReceta).child("Descripcion").setValue(edDescripcion.getText().toString());
 
@@ -171,6 +174,8 @@ public class FragmentAgregarReceta extends Fragment {
                             }
                         }
                         Navigation.findNavController(view).navigate(R.id.action_fragmentAgregarReceta_to_navigation_recetas);
+
+                           findNavController(view).navigate(R.id.navigation_recetas);
 
                     } else
                     {

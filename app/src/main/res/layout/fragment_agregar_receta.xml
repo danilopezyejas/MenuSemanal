@@ -24,12 +24,12 @@
 
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/txtTitulo"
                     android:layout_width="332dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
 
-                    android:text="LISTA DE RECETAS"
+                    android:text="RESETA"
                     android:textAlignment="center"
                     android:textSize="20dp"
                     android:textStyle="bold"

@@ -120,6 +120,8 @@ public class RecetasFragment extends Fragment {
                     }
                     ((AdapterListaReceta)recyclerView.getAdapter()).removeSelected();
 
+
+
                 }
             });
 

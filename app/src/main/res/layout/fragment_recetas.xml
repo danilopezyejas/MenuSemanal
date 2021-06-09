@@ -63,5 +63,6 @@
         android:src="@drawable/ic_baseline_delete_sweep_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="OnClick" />
+        tools:ignore="OnClick"
+        android:visibility="invisible"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

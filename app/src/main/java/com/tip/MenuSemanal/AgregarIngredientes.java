@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -150,59 +151,54 @@ public class AgregarIngredientes extends Fragment {
         agregar = (Button) view.findViewById(R.id.btnAceptarIngredientes);
         if (getArguments() != null) {
             agregar.setText("Modificar");
+            agregar.setTextColor(Color.RED);
         }
         agregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+        //Me aseguro de que el usuario alla completado todos los campos
+                if (!isEmpty(etNombre) && !isEmpty(etPrecio) && !isEmpty(etCantidad)) {
+                    String nombre = etNombre.getText().toString();
+                    float precio = Float.parseFloat(etPrecio.getText().toString());
+                    int cantidad = Integer.parseInt(etCantidad.getText().toString());
+                    String unidad = spUnidad.getSelectedItem().toString();
 
-
-                    //Me aseguro de que el usuario alla completado todos los campos
-                    if (!isEmpty(etNombre) && !isEmpty(etPrecio) && !isEmpty(etCantidad)) {
-                        String nombre = etNombre.getText().toString();
-                        float precio = Float.parseFloat(etPrecio.getText().toString());
-                        int cantidad = Integer.parseInt(etCantidad.getText().toString());
-                        String unidad = spUnidad.getSelectedItem().toString();
-
-                        if (agregar.getText().equals("Agregar")) {
-                            //Creo el id (me lo proporciona firebase)
-                            String idIngrediente = db.push().getKey();
-
-                            Ingrediente newIngrediente = new Ingrediente(idIngrediente, nombre, precio, cantidad, unidad);
-
-                            //lo agrego a la base de datos
-
-                            db.child("Ingredientes").child(idIngrediente).setValue(newIngrediente).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull @NotNull Task<Void> task2) {
-                                    //Compruebo si se agrego bien a la base
-                                    if (task2.isComplete()) {
-                                        Navigation.findNavController(view).navigate(R.id.ir_a_altaIngredientes);
-                                        closeKeyBoard(view);
-                                    } else {
-                                        Toast.makeText(getActivity(), "Ocurrio un error!", Toast.LENGTH_SHORT).show();
-                                    }
+                    if (agregar.getText().equals("Agregar")) {
+         //Creo el id (me lo proporciona firebase)
+                        String idIngrediente = db.push().getKey();
+                        Ingrediente newIngrediente = new Ingrediente(idIngrediente, nombre, precio, cantidad, unidad);
+//lo agrego a la base de datos
+                        db.child("Ingredientes").child(idIngrediente).setValue(newIngrediente).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull @NotNull Task<Void> task2) {
+                  //Compruebo si se agrego bien a la base
+                                if (task2.isComplete()) {
+                                    Navigation.findNavController(view).navigate(R.id.ir_a_altaIngredientes);
+                                    closeKeyBoard(view);
+                                } else {
+                                    Toast.makeText(getActivity(), "Ocurrio un error!", Toast.LENGTH_SHORT).show();
                                 }
-                            });
-                        }else {
-                            Ingrediente newIngrediente = new Ingrediente(id, nombre, precio, cantidad, unidad);
-                            db.child(id).setValue(newIngrediente).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull @NotNull Task<Void> task3) {
-                                    //Compruebo si se agrego bien a la base
-                                    if (task3.isComplete()) {
-                                        Navigation.findNavController(view).navigate(R.id.ir_a_altaIngredientes);
-                                        closeKeyBoard(view);
-                                        Toast.makeText(getActivity(), "Se modifico!", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(getActivity(), "Ocurrio un error!", Toast.LENGTH_SHORT).show();
-                                    }
+                            }
+                        });
+                    }else {
+                        Ingrediente newIngrediente = new Ingrediente(id, nombre, precio, cantidad, unidad);
+                        db.child("Ingredientes").child(id).setValue(newIngrediente).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull @NotNull Task<Void> task2) {
+               //Compruebo si se agrego bien a la base
+                                if (task2.isComplete()) {
+                                    Navigation.findNavController(view).navigate(R.id.ir_a_altaIngredientes);
+                                    closeKeyBoard(view);
+                                    Toast.makeText(getActivity(), "Se modifico!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getActivity(), "Ocurrio un error!", Toast.LENGTH_SHORT).show();
                                 }
+                            }
                         });
                     }
-                    } else {
-                        Toast.makeText(getActivity(), "Debe completar todos los campos!", Toast.LENGTH_SHORT).show();
-                    }
-
+                } else {
+                    Toast.makeText(getActivity(), "Debe completar todos los campos!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

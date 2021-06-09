@@ -52,11 +52,15 @@ import static android.app.Activity.RESULT_OK;
  */
 public class AgregarIngredientes extends Fragment {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_NOMBRE = "paramNom";
+    private static final String ARG_PRECIO = "paramPre";
+    private static final String ARG_CANTIDAD = "paramCant";
+    private static final String ARG_UNIDAD = "paramUni";
 
-    private String mParam1;
-    private String mParam2;
+    private String paramNom;
+    private String paramPre;
+    private String paramCant;
+    private String paramUni;
 
     private Spinner unidadSelecionada;
 
@@ -77,16 +81,20 @@ public class AgregarIngredientes extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param paramNom Parameter 1.
+     * @param paramPre Parameter 2.
+     * @param paramCant Parameter 3.
+     * @param paramUni Parameter 4.
      * @return A new instance of fragment AgregarIngredientes.
      */
     // TODO: Rename and change types and number of parameters
-    public static AgregarIngredientes newInstance(String param1, String param2) {
+    public static AgregarIngredientes newInstance(String paramNom, String paramPre, String paramCant, String paramUni) {
         AgregarIngredientes fragment = new AgregarIngredientes();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_NOMBRE, paramNom);
+        args.putString(ARG_PRECIO, paramPre);
+        args.putString(ARG_CANTIDAD, paramCant);
+        args.putString(ARG_UNIDAD, paramUni);
         fragment.setArguments(args);
 
         return fragment;
@@ -96,10 +104,11 @@ public class AgregarIngredientes extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            paramNom = getArguments().getString(ARG_NOMBRE);
+            paramPre = getArguments().getString(ARG_PRECIO);
+            paramCant = getArguments().getString(ARG_CANTIDAD);
+            paramUni = getArguments().getString(ARG_UNIDAD);
         }
-
     }
 
     @Override
@@ -112,7 +121,17 @@ public class AgregarIngredientes extends Fragment {
         unidadSelecionada = (Spinner) view.findViewById(R.id.spinner);
         ArrayAdapter<unidades> u = new ArrayAdapter<unidades>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, unidades.values());
         unidadSelecionada.setAdapter(u);
+
         etNombre = view.findViewById(R.id.nombreIngrediente);
+        etPrecio = view.findViewById(R.id.precioIngrediente);
+        etCantidad = view.findViewById(R.id.etCantidad);
+        spUnidad = (Spinner) view.findViewById(R.id.spinner);
+
+        etNombre.setText(paramNom);
+        etPrecio.setText(paramPre);
+        etCantidad.setText(paramCant);
+        spUnidad.setSelection(getIndex(spUnidad, paramUni));
+
 
         TextView micro = (TextView) view.findViewById(R.id.idMicroIngre);
         micro.setOnClickListener(new View.OnClickListener() {
@@ -126,10 +145,7 @@ public class AgregarIngredientes extends Fragment {
         agregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                etNombre = getView().findViewById(R.id.nombreIngrediente);
-                etPrecio = getView().findViewById(R.id.precioIngrediente);
-                etCantidad = getView().findViewById(R.id.etCantidad);
-                spUnidad = (Spinner) getView().findViewById(R.id.spinner);
+
 
                 //Me aseguro de que el usuario alla completado todos los campos
                 if (!isEmpty(etNombre)&&!isEmpty(etPrecio)&&!isEmpty(etCantidad)){
@@ -206,6 +222,17 @@ public class AgregarIngredientes extends Fragment {
 
     private boolean isEmpty(EditText etText) {
         return etText.getText().toString().trim().length() == 0;
+    }
+
+//    Devuelve la posicion de la unidad seleccionada
+    private int getIndex(Spinner spinner, String myString){
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                return i;
+            }
+        }
+
+        return 0;
     }
 
 

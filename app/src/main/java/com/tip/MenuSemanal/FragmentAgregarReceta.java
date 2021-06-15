@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.slider.BaseOnChangeListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import Clases.Ingrediente;
+import Clases.Recetas;
 
 import static androidx.navigation.Navigation.findNavController;
 
@@ -42,9 +44,10 @@ import static androidx.navigation.Navigation.findNavController;
  * create an instance of this fragment.
  */
 
-
 public class FragmentAgregarReceta extends Fragment {
 
+    boolean aborta = false;
+    boolean exist = false;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -60,7 +63,7 @@ public class FragmentAgregarReceta extends Fragment {
     RecyclerView recyclerView;
     EditText edDescripcion;
     ArrayList<Ingrediente> listaIngredientes = new ArrayList<Ingrediente>();
-
+    View view;
 
     public FragmentAgregarReceta() {
         // Required empty public constructor
@@ -91,7 +94,6 @@ public class FragmentAgregarReceta extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-            //Toast.makeText(getContext(),mParam1,Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -102,7 +104,7 @@ public class FragmentAgregarReceta extends Fragment {
         db = FirebaseDatabase.getInstance().getReference();
 
 
-        View view = inflater.inflate(R.layout.fragment_agregar_receta, container, false);
+        view = inflater.inflate(R.layout.fragment_agregar_receta, container, false);
         TextView txtnombrer =(TextView) view.findViewById(R.id.edNombreReceta);
         edDescripcion =(EditText) view.findViewById(R.id.edDescripcion);
         txtUnidad = (TextView) view.findViewById(R.id.txtUnidad);
@@ -144,47 +146,52 @@ public class FragmentAgregarReceta extends Fragment {
                 @Override
                 public void onClick(View view) {
                     String nombreReceta = txtnombrer.getText().toString();
-                   // edDescripcion.setFocusable(View.FOCUSABLE);
-
-
                     if (!nombreReceta.equals("")) {
-
-                        if(!mParam1.equals(nombreReceta)){
-                           // db.child("Recetas").child(mParam1).removeValue();
-                        }//else
-                            //db.child("Recetas").child(nombreReceta).removeValue();
-
-                        db.child("Recetas").child(nombreReceta).child("Descripcion").setValue(edDescripcion.getText().toString());
-
-                        for (Ingrediente i : listaIngredientes) {
-                            //Toast.makeText(getActivity(),i.getNombre(),Toast.LENGTH_SHORT).show();
-                            if (!i.getNombre().equals("")) {
-                                System.out.println(i.getNombre() + " " + i.getCantidad());
-
-                                db.child("Recetas").child(nombreReceta).child(i.getNombre()).setValue(i).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull @NotNull Task<Void> task2) {
-                                        //Compruebo si se agrego bien a la base
-                                        if (task2.isComplete()) {
-                                        } else {
-                                            Toast.makeText(getActivity(), "Ocurrio un error!", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                        Navigation.findNavController(view).navigate(R.id.action_fragmentAgregarReceta_to_navigation_recetas);
-
-                           findNavController(view).navigate(R.id.navigation_recetas);
-
+                       if(!mParam1.equals(nombreReceta))
+                           existeReceta(nombreReceta);
+                       else
+                           guardaReceta(nombreReceta);
                     } else
-                    {
                         Toast.makeText(getActivity(),"Ingrese nombre de receta",Toast.LENGTH_LONG).show();
-                    }
                 }
 
         });
         return view;
+    }
+
+   private void guardaReceta(String nombreReceta){
+       if (!mParam1.equals("")) db.child("Recetas").child(mParam1).removeValue();
+
+       db.child("Recetas").child(nombreReceta).child("Descripcion").setValue(edDescripcion.getText().toString());
+
+       for (Ingrediente i : listaIngredientes) {
+           if (!i.getNombre().equals("")) {
+               db.child("Recetas").child(nombreReceta).child(i.getNombre()).setValue(i);
+           }
+       }
+       findNavController(view).navigateUp();
+
+
+
+}
+
+    private void existeReceta (String nombreReceta) {
+        db.child("Recetas").orderByKey().equalTo(nombreReceta).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.hasChildren()) {
+
+                    guardaReceta(nombreReceta);
+                } else
+                Toast.makeText(getActivity(), "Ya existe la receta con nombre: " + nombreReceta, Toast.LENGTH_LONG).show();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void cargaRecetas() {

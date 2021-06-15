@@ -115,13 +115,11 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    // Insert a new item to the RecyclerView on a predefined position
     public void insert(int position, Ingrediente ingrediente) {
         listaIngrediente.add(position, ingrediente);
         notifyItemInserted(position);
     }
 
-    // Remove a RecyclerView item containing a specified Data object
     public void remove(Ingrediente ingrediente) {
         int position = listaIngrediente.indexOf(ingrediente);
         if(position>=0) {

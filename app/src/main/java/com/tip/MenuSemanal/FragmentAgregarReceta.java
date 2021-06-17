@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +37,7 @@ import java.util.Objects;
 
 import Clases.Ingrediente;
 import Clases.Recetas;
+import Enumeracion.unidades;
 
 import static androidx.navigation.Navigation.findNavController;
 
@@ -56,7 +59,7 @@ public class FragmentAgregarReceta extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    TextView txtUnidad;
+    Spinner spinUnidad;
     ImageButton btnagregar;
     ImageButton btnBorrar;
     ImageButton btnAceptar;
@@ -107,12 +110,10 @@ public class FragmentAgregarReceta extends Fragment {
         view = inflater.inflate(R.layout.fragment_agregar_receta, container, false);
         TextView txtnombrer =(TextView) view.findViewById(R.id.edNombreReceta);
         edDescripcion =(EditText) view.findViewById(R.id.edDescripcion);
-        txtUnidad = (TextView) view.findViewById(R.id.txtUnidad);
         btnagregar= (ImageButton) view.findViewById(R.id.btnAgregaring);
         btnBorrar = (ImageButton) view.findViewById(R.id.btnBorraring);
         btnAceptar=(ImageButton) view.findViewById(R.id.btnAceptarIngredientes);
         txtnombrer.setText(mParam1);
-        //ArrayAdapter<unidades> u = new ArrayAdapter<unidades>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, unidades.values());
         recyclerView = (RecyclerView) view.findViewById(R.id.rvlistaIngredientes);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -145,6 +146,7 @@ public class FragmentAgregarReceta extends Fragment {
 
                 @Override
                 public void onClick(View view) {
+
                     String nombreReceta = txtnombrer.getText().toString();
                     if (!nombreReceta.equals("")) {
                        if(!mParam1.equals(nombreReceta))

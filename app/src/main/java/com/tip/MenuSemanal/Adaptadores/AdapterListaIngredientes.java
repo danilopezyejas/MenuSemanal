@@ -2,17 +2,25 @@ package com.tip.MenuSemanal.Adaptadores;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListPopupWindow;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.tip.MenuSemanal.MainActivity;
 import com.tip.MenuSemanal.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -109,24 +117,24 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
     }
 
 
-
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-    }
-
-    public void insert(int position, Ingrediente ingrediente) {
-        listaIngrediente.add(position, ingrediente);
-        notifyItemInserted(position);
-    }
-
-    public void remove(Ingrediente ingrediente) {
-        int position = listaIngrediente.indexOf(ingrediente);
-        if(position>=0) {
-            listaIngrediente.remove(position);
-            notifyItemRemoved(position);
-        }
-    }
+//
+//    @Override
+//    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+//        super.onAttachedToRecyclerView(recyclerView);
+//    }
+//
+//    public void insert(int position, Ingrediente ingrediente) {
+//        listaIngrediente.add(position, ingrediente);
+//        notifyItemInserted(position);
+//    }
+//
+//    public void remove(Ingrediente ingrediente) {
+//        int position = listaIngrediente.indexOf(ingrediente);
+//        if(position>=0) {
+//            listaIngrediente.remove(position);
+//            notifyItemRemoved(position);
+//        }
+//    }
 
     public void removeSelected (){
         ArrayList<Ingrediente> elim =new ArrayList<Ingrediente>();
@@ -149,7 +157,7 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
     public class ViewHoldersDatos extends RecyclerView.ViewHolder {
         EditText edCantidad;
         AutoCompleteTextView acNombre;
-        TextView txtUnidad;
+        Spinner spinUnidad ;
         CheckBox chk;
         View item;
         int posicion;
@@ -159,9 +167,10 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             this.item = itemView;
             acNombre = itemView.findViewById(R.id.ACnombre);
             edCantidad = itemView.findViewById(R.id.EdCantidad);
-            txtUnidad = itemView.findViewById(R.id.txtUnidad);
-
-
+            spinUnidad = itemView.findViewById(R.id.spinUnidad);
+            spinUnidad = (Spinner) itemView.findViewById(R.id.spinUnidad);
+            ArrayAdapter<unidades> u = new ArrayAdapter<unidades>(itemView.getContext(), android.R.layout.simple_spinner_item, unidades.values());
+            spinUnidad.setAdapter(u);
         }
 
         @SuppressLint("ResourceAsColor")
@@ -169,8 +178,9 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
         public void asignardatos(@NotNull Ingrediente ingrediente, int position) {
             acNombre.setText(ingrediente.getNombre());
             edCantidad.setText(Integer.toString(ingrediente.getCantidad()));
-            txtUnidad.setText(ingrediente.getUnidad());
+            spinUnidad.setSelection(getSpinnerIndex(spinUnidad,ingrediente.getUnidad()));
             posicion = position;
+
 
             edCantidad.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
@@ -185,18 +195,39 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             });
 
 
-            acNombre.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+           acNombre.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View view, boolean b) {
                     if (!b)
-                        //if (!listaIngrediente.get(position).getNombre().equals(acNombre.getText().toString())) {
                         ingrediente.setNombre( ((AutoCompleteTextView)view).getText().toString());
-                    //}
-                    //notifyItemChanged(position);
+                }
+            });
+
+
+            spinUnidad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    ingrediente.setUnidad(spinUnidad.getSelectedItem().toString());
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
 
                 }
             });
         }
 
+
     }
+    private int getSpinnerIndex(Spinner spinner, String myString){
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
 }

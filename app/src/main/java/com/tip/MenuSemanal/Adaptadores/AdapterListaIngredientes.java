@@ -40,6 +40,8 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
     View viewant = null;
     boolean multiselect = false;
     int posant =-1;
+
+
     public AdapterListaIngredientes(@NonNull ArrayList<Ingrediente> lingrediente) {
         listaIngrediente=lingrediente;
     }
@@ -82,6 +84,8 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
                 notifyItemChanged(position);
             }
         });
+
+
 
         holder.item.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -171,6 +175,8 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             spinUnidad = (Spinner) itemView.findViewById(R.id.spinUnidad);
             ArrayAdapter<unidades> u = new ArrayAdapter<unidades>(itemView.getContext(), android.R.layout.simple_spinner_item, unidades.values());
             spinUnidad.setAdapter(u);
+
+
         }
 
         @SuppressLint("ResourceAsColor")
@@ -181,6 +187,24 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             spinUnidad.setSelection(getSpinnerIndex(spinUnidad,ingrediente.getUnidad()));
             posicion = position;
 
+            acNombre.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+
+            acNombre.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if (multiselect)
+                        item.callOnClick();
+                    else
+                        item.performLongClick();
+                    multiselect= true;
+                    return false;
+                }
+            });
 
             edCantidad.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
@@ -195,11 +219,13 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             });
 
 
-           acNombre.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            acNombre.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View view, boolean b) {
-                    if (!b)
-                        ingrediente.setNombre( ((AutoCompleteTextView)view).getText().toString());
+                    if (!b) {
+                        ingrediente.setNombre(((AutoCompleteTextView) view).getText().toString());
+                    }
                 }
             });
 

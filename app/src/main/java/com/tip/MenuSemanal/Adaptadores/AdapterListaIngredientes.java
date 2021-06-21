@@ -20,6 +20,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tip.MenuSemanal.MainActivity;
 import com.tip.MenuSemanal.R;
 
@@ -37,13 +42,30 @@ import static com.tip.MenuSemanal.R.color.purple_200;
 public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaIngredientes.ViewHoldersDatos> {
 
     ArrayList<Ingrediente> listaIngrediente;
+    ArrayAdapter<String> listaAdapter;
+    ArrayList<String> lista = new ArrayList<String>();
     View viewant = null;
     boolean multiselect = false;
     int posant =-1;
 
 
     public AdapterListaIngredientes(@NonNull ArrayList<Ingrediente> lingrediente) {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference("Ingredientes");
+
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                for (DataSnapshot ingredientesDataSnap : snapshot.getChildren())
+                    lista.add(ingredientesDataSnap.child("nombre").getValue().toString());
+            }
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+
         listaIngrediente=lingrediente;
+
     }
 
     @NonNull
@@ -70,19 +92,19 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             @Override
             public void onClick(View v) {
 
-                if(multiselect==true)
+                if(multiselect==true){
                     ing.setSel(!ing.getSel());
-                else{
-                    if (posant >-1){
-                        listaIngrediente.get(posant).setSel(false);
-                        notifyItemChanged(posant);
-                    }
-                    ing.setSel(true);
-                    posant=position;
-
-                }
+//                else{
+//                    if (posant >-1){
+//                        listaIngrediente.get(posant).setSel(false);
+//                        notifyItemChanged(posant);
+//                    }
+//                    ing.setSel(true);
+//                    posant=position;
+//
+//                }
                 notifyItemChanged(position);
-            }
+            }}
         });
 
 
@@ -90,25 +112,25 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
         holder.item.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (multiselect == true) {
+                multiselect = !multiselect;
+                if (!multiselect) {
                     for (Ingrediente ingr : listaIngrediente) {
                         ingr.setSel(false);
 
                     }
-                }
-                ing.setSel(true);
-                posant=position;
-                notifyDataSetChanged();
-                multiselect = !multiselect;
+                }else
+                  ing.setSel(true);
+//                posant=position;
+               notifyDataSetChanged();
                 return true;
             }
         });
 
         if(ing.getSel()==true){
-            if (multiselect == true)
+           // if (multiselect == true)
                 holder.item.setBackgroundColor(Color.GRAY)                                                                                              ;
-            else
-                holder.item.setBackgroundColor(purple_200);
+//            else
+//                holder.item.setBackgroundColor(purple_200);
         } else
             holder.item.setBackgroundColor(Color.TRANSPARENT);
 
@@ -121,25 +143,6 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
     }
 
 
-//
-//    @Override
-//    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-//        super.onAttachedToRecyclerView(recyclerView);
-//    }
-//
-//    public void insert(int position, Ingrediente ingrediente) {
-//        listaIngrediente.add(position, ingrediente);
-//        notifyItemInserted(position);
-//    }
-//
-//    public void remove(Ingrediente ingrediente) {
-//        int position = listaIngrediente.indexOf(ingrediente);
-//        if(position>=0) {
-//            listaIngrediente.remove(position);
-//            notifyItemRemoved(position);
-//        }
-//    }
-
     public void removeSelected (){
         ArrayList<Ingrediente> elim =new ArrayList<Ingrediente>();
         for(Ingrediente ing: listaIngrediente){
@@ -151,9 +154,11 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             listaIngrediente.removeAll(elim);
             notifyDataSetChanged();
         }
+        multiselect= false;
     }
 
     public void nuevoingrediente(){
+        multiselect = false;
         listaIngrediente.add (new Ingrediente("","",0f,0, unidades.GR.toString()));
         notifyDataSetChanged();
     }
@@ -186,22 +191,28 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             edCantidad.setText(Integer.toString(ingrediente.getCantidad()));
             spinUnidad.setSelection(getSpinnerIndex(spinUnidad,ingrediente.getUnidad()));
             posicion = position;
+            acNombre.setAdapter(new ArrayAdapter<String>( item.getContext(),android.R.layout.simple_dropdown_item_1line,lista));
 
-            acNombre.setOnClickListener(new View.OnClickListener() {
+            acNombre.setThreshold(2);
+
+
+            acNombre.setOnTouchListener(new View.OnTouchListener() {
                 @Override
-                public void onClick(View view) {
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    if (motionEvent.getAction()== MotionEvent.ACTION_UP && multiselect ) {
+                        item.performClick();
 
+                    }
+                    return false;
                 }
             });
 
             acNombre.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    if (multiselect)
-                        item.callOnClick();
-                    else
+                        Toast.makeText(item.getContext(),"lc",Toast.LENGTH_SHORT).show();
                         item.performLongClick();
-                    multiselect= true;
+                    //multiselect= true;
                     return false;
                 }
             });

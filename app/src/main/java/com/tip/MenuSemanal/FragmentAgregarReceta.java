@@ -166,7 +166,7 @@ public class FragmentAgregarReceta extends Fragment {
    private void guardaReceta(String nombreReceta){
         DatabaseReference db2;
 
-        //si no es una receta nueva la eliminamos. para luego sobreescribirla
+        //si no es una receta nueva la eliminamos. para luego reescribirla
         if (!mParam1.equals("")) db.child("Recetas").child(mParam1).removeValue();
 
        //descripcion de receta
@@ -187,16 +187,18 @@ public class FragmentAgregarReceta extends Fragment {
                        for(DataSnapshot ingredientesDataSnap : snapshot.getChildren()){
                            Ingrediente ingrediente = ingredientesDataSnap.getValue(Ingrediente.class);
                            if(ingrediente.getNombre().equalsIgnoreCase(i.getNombre())) {
-                               db.child("Recetas").child(nombreReceta).child(ingrediente.getId()).setValue(i);
+                               i.setId(ingrediente.getId());
+                               db.child("Recetas").child(nombreReceta).child(ingrediente.getNombre()).setValue(i);
                                noIngresado = false;
                                break;
                            }
                        }
                        if (noIngresado){
                             String nuevoid = db.push().getKey();
-                            db.child("Recetas").child(nombreReceta).child(nuevoid).setValue(i);
                             i.setId(nuevoid);
                             finalDb.child(nuevoid).setValue(i);
+
+                            db.child("Recetas").child(nombreReceta).child(i.getNombre()).setValue(i);
                        }
                    }
 
@@ -243,22 +245,41 @@ public class FragmentAgregarReceta extends Fragment {
 
 
     private void cargaRecetas() {
-        //Evaluo si trajo algo
+
         if (!mParam1.equals("")){
-        db.child("Recetas").child(mParam1).addValueEventListener(new ValueEventListener() {
+            ArrayList<Ingrediente> li = new ArrayList<Ingrediente>();
+
+            db.child("Ingredientes").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                    for( DataSnapshot ing : snapshot.getChildren()){
+                        li.add (ing.getValue(Ingrediente.class));
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                }
+            });
+
+            db.child("Recetas").child(mParam1).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-
                 listaIngredientes.clear();
-
                 if(snapshot.child("Descripcion").getValue()!=null){
                     edDescripcion.setText(snapshot.child("Descripcion").getValue().toString()); }
                 //
                 for(DataSnapshot ingredientesDataSnap : snapshot.getChildren()){
                     if (!ingredientesDataSnap.getKey().equals("Descripcion")){
-                    Ingrediente ingrediente = ingredientesDataSnap.getValue(Ingrediente.class);
-                    ingrediente.setSel(false);
-                    listaIngredientes.add(ingrediente);
+                        Ingrediente ingrediente = ingredientesDataSnap.getValue(Ingrediente.class);
+                        for (Ingrediente i : li){
+                            if(i.getId().equalsIgnoreCase(ingrediente.getId())){
+                                ingrediente.setNombre(i.getNombre());
+                            }
+                        }
+                        ingrediente.setSel(false);
+                        listaIngredientes.add(ingrediente);
                 }}
                 recyclerView.getAdapter().notifyDataSetChanged();
             }

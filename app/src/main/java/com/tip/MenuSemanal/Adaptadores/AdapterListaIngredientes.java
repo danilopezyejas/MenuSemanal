@@ -1,12 +1,16 @@
 package com.tip.MenuSemanal.Adaptadores;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.graphics.Color;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -44,9 +48,7 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
     ArrayList<Ingrediente> listaIngrediente;
     ArrayAdapter<String> listaAdapter;
     ArrayList<String> lista = new ArrayList<String>();
-    View viewant = null;
     boolean multiselect = false;
-    int posant =-1;
 
 
     public AdapterListaIngredientes(@NonNull ArrayList<Ingrediente> lingrediente) {
@@ -92,19 +94,11 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             @Override
             public void onClick(View v) {
 
-                if(multiselect==true){
+                if(multiselect){
                     ing.setSel(!ing.getSel());
-//                else{
-//                    if (posant >-1){
-//                        listaIngrediente.get(posant).setSel(false);
-//                        notifyItemChanged(posant);
-//                    }
-//                    ing.setSel(true);
-//                    posant=position;
-//
-//                }
-                notifyItemChanged(position);
-            }}
+                     notifyItemChanged(position);
+                }
+            }
         });
 
 
@@ -118,19 +112,17 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
                         ingr.setSel(false);
 
                     }
-                }else
-                  ing.setSel(true);
-//                posant=position;
-               notifyDataSetChanged();
+                }else {
+                    ing.setSel(true);
+
+                }
+                notifyDataSetChanged();
                 return true;
             }
         });
 
-        if(ing.getSel()==true){
-           // if (multiselect == true)
+        if(ing.getSel()){
                 holder.item.setBackgroundColor(Color.GRAY)                                                                                              ;
-//            else
-//                holder.item.setBackgroundColor(purple_200);
         } else
             holder.item.setBackgroundColor(Color.TRANSPARENT);
 
@@ -159,7 +151,8 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
 
     public void nuevoingrediente(){
         multiselect = false;
-        listaIngrediente.add (new Ingrediente("","",0f,0, unidades.GR.toString()));
+        listaIngrediente.add (new Ingrediente("-1","",0f,0, unidades.GR.toString()));
+
         notifyDataSetChanged();
     }
 
@@ -169,7 +162,6 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
         Spinner spinUnidad ;
         CheckBox chk;
         View item;
-        int posicion;
 
         public ViewHoldersDatos(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -184,23 +176,26 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
 
         }
 
-        @SuppressLint("ResourceAsColor")
+        @SuppressLint({"ResourceAsColor", "ClickableViewAccessibility"})
 
         public void asignardatos(@NotNull Ingrediente ingrediente, int position) {
             acNombre.setText(ingrediente.getNombre());
             edCantidad.setText(Integer.toString(ingrediente.getCantidad()));
             spinUnidad.setSelection(getSpinnerIndex(spinUnidad,ingrediente.getUnidad()));
-            posicion = position;
             acNombre.setAdapter(new ArrayAdapter<String>( item.getContext(),android.R.layout.simple_dropdown_item_1line,lista));
 
             acNombre.setThreshold(2);
-
+            if (ingrediente.getId().equals("-1")){
+                ingrediente.setId("");
+                acNombre.requestFocus();
+            }
 
             acNombre.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     if (motionEvent.getAction()== MotionEvent.ACTION_UP && multiselect ) {
                         item.performClick();
+                        return true;
 
                     }
                     return false;
@@ -210,9 +205,7 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             acNombre.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                        Toast.makeText(item.getContext(),"lc",Toast.LENGTH_SHORT).show();
-                        item.performLongClick();
-                    //multiselect= true;
+                    item.performLongClick();
                     return false;
                 }
             });
@@ -264,7 +257,8 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             }
         }
 
-        return -1;
+        return 0;
     }
+
 
 }

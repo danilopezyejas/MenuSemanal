@@ -125,7 +125,9 @@ public class FragmentAgregarReceta extends Fragment {
             @Override
             public void onClick(View view) {
                 ((AdapterListaIngredientes) Objects.requireNonNull(recyclerView.getAdapter())).nuevoingrediente();
+                ((MainActivity)getActivity()).closeKB(view);
             }
+
         });
 
         btnBorrar.setOnClickListener(new View.OnClickListener() {
@@ -146,7 +148,7 @@ public class FragmentAgregarReceta extends Fragment {
 
                 @Override
                 public void onClick(View view) {
-
+                    txtnombrer.requestFocus();
                     String nombreReceta = txtnombrer.getText().toString();
                     if (!nombreReceta.equals("")) {
                        if(!mParam1.equals(nombreReceta))
@@ -155,8 +157,9 @@ public class FragmentAgregarReceta extends Fragment {
                            guardaReceta(nombreReceta);
                            findNavController(view).navigateUp();
                        }
-                    } else
-                        Toast.makeText(getActivity(),"Ingrese nombre de receta",Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getActivity(), "Ingrese nombre de receta", Toast.LENGTH_LONG).show();
+                    }
                 }
 
         });

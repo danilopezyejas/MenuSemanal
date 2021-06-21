@@ -43,6 +43,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void closeKB(View view){
+        view = this.getCurrentFocus();
+        if (view != null){
+            InputMethodManager imm = (InputMethodManager)
+                    this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
 
 

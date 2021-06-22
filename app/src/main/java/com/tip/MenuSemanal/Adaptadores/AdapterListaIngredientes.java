@@ -1,22 +1,42 @@
 package com.tip.MenuSemanal.Adaptadores;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.graphics.Color;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListPopupWindow;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.tip.MenuSemanal.MainActivity;
 import com.tip.MenuSemanal.R;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Time;
 import java.util.ArrayList;
 
 import Clases.Ingrediente;
@@ -27,13 +47,32 @@ import static com.tip.MenuSemanal.R.color.purple_200;
 
 
 public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaIngredientes.ViewHoldersDatos> {
-
+    ImageButton btnMas;
+    ImageButton btnRes;
     ArrayList<Ingrediente> listaIngrediente;
-    View viewant = null;
+    ArrayAdapter<String> listaAdapter;
+    ArrayList<String> lista = new ArrayList<String>();
     boolean multiselect = false;
-    int posant =-1;
-    public AdapterListaIngredientes(@NonNull ArrayList<Ingrediente> lingrediente) {
+
+
+    public AdapterListaIngredientes(@NonNull ArrayList<Ingrediente> lingrediente, ImageButton btnMas,ImageButton btnRes) {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference("Ingredientes");
+
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                for (DataSnapshot ingredientesDataSnap : snapshot.getChildren())
+                    lista.add(ingredientesDataSnap.child("nombre").getValue().toString());
+            }
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+
         listaIngrediente=lingrediente;
+        this.btnMas = btnMas;
+        this.btnRes = btnRes;
     }
 
     @NonNull
@@ -60,43 +99,43 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             @Override
             public void onClick(View v) {
 
-                if(multiselect==true)
+                if(multiselect){
                     ing.setSel(!ing.getSel());
-                else{
-                    if (posant >-1){
-                        listaIngrediente.get(posant).setSel(false);
-                        notifyItemChanged(posant);
-                    }
-                    ing.setSel(true);
-                    posant=position;
-
+                     notifyItemChanged(position);
                 }
-                notifyItemChanged(position);
+            }
+        });
+
+        holder.item.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(!b) Toast.makeText(holder.item.getContext(),"foco",Toast.LENGTH_SHORT).show();
             }
         });
 
         holder.item.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (multiselect == true) {
+                multiselect = !multiselect;
+                if (!multiselect) {
+
                     for (Ingrediente ingr : listaIngrediente) {
                         ingr.setSel(false);
 
                     }
+                }else {
+                    ing.setSel(true);
+                    btnMas.setImageResource(R.drawable.ic_baseline_delete_24);
+                    btnMas.setTag(R.drawable.ic_baseline_delete_24);
+                    btnRes.setVisibility(View.VISIBLE);
                 }
-                ing.setSel(true);
-                posant=position;
                 notifyDataSetChanged();
-                multiselect = !multiselect;
                 return true;
             }
         });
 
-        if(ing.getSel()==true){
-            if (multiselect == true)
+        if(ing.getSel()){
                 holder.item.setBackgroundColor(Color.GRAY)                                                                                              ;
-            else
-                holder.item.setBackgroundColor(purple_200);
         } else
             holder.item.setBackgroundColor(Color.TRANSPARENT);
 
@@ -108,26 +147,13 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
         return listaIngrediente.size();
     }
 
-
-
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-    }
-
-    // Insert a new item to the RecyclerView on a predefined position
-    public void insert(int position, Ingrediente ingrediente) {
-        listaIngrediente.add(position, ingrediente);
-        notifyItemInserted(position);
-    }
-
-    // Remove a RecyclerView item containing a specified Data object
-    public void remove(Ingrediente ingrediente) {
-        int position = listaIngrediente.indexOf(ingrediente);
-        if(position>=0) {
-            listaIngrediente.remove(position);
-            notifyItemRemoved(position);
+    public void cancelSelected(){
+        multiselect=false;
+        for(Ingrediente i : listaIngrediente){
+            i.setSel(false);
         }
+
+        notifyDataSetChanged();
     }
 
     public void removeSelected (){
@@ -141,38 +167,76 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             listaIngrediente.removeAll(elim);
             notifyDataSetChanged();
         }
+        multiselect= false;
     }
 
     public void nuevoingrediente(){
-        listaIngrediente.add (new Ingrediente("","",0f,0, unidades.GR.toString()));
+
+        listaIngrediente.add (0,new Ingrediente("-1","",0f,0, unidades.GR.toString()));
+
         notifyDataSetChanged();
     }
 
     public class ViewHoldersDatos extends RecyclerView.ViewHolder {
         EditText edCantidad;
         AutoCompleteTextView acNombre;
-        TextView txtUnidad;
+        Spinner spinUnidad ;
         CheckBox chk;
         View item;
-        int posicion;
 
         public ViewHoldersDatos(@NonNull @NotNull View itemView) {
             super(itemView);
             this.item = itemView;
             acNombre = itemView.findViewById(R.id.ACnombre);
             edCantidad = itemView.findViewById(R.id.EdCantidad);
-            txtUnidad = itemView.findViewById(R.id.txtUnidad);
+            spinUnidad = itemView.findViewById(R.id.spinUnidad);
+            spinUnidad = (Spinner) itemView.findViewById(R.id.spinUnidad);
+            ArrayAdapter<unidades> u = new ArrayAdapter<unidades>(itemView.getContext(), android.R.layout.simple_spinner_item, unidades.values());
+            spinUnidad.setAdapter(u);
 
 
         }
 
-        @SuppressLint("ResourceAsColor")
+        @SuppressLint({"ResourceAsColor", "ClickableViewAccessibility"})
 
         public void asignardatos(@NotNull Ingrediente ingrediente, int position) {
             acNombre.setText(ingrediente.getNombre());
             edCantidad.setText(Integer.toString(ingrediente.getCantidad()));
-            txtUnidad.setText(ingrediente.getUnidad());
-            posicion = position;
+            spinUnidad.setSelection(getSpinnerIndex(spinUnidad,ingrediente.getUnidad()));
+            acNombre.setAdapter(new ArrayAdapter<String>( item.getContext(),android.R.layout.simple_dropdown_item_1line,lista));
+
+            acNombre.setThreshold(2);
+            if (ingrediente.getId().equals("-1")){
+                ingrediente.setId("");
+                acNombre.requestFocus();
+            }
+
+            acNombre.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                    if (motionEvent.getAction()== MotionEvent.ACTION_DOWN && multiselect ) {
+                        return true;
+                    }
+
+
+                    if (motionEvent.getAction()== MotionEvent.ACTION_UP  ) {
+                        item.performClick();
+                    }
+
+                    return false;
+                }
+            });
+
+            acNombre.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+
+                    item.performLongClick();
+
+                    return false;
+                }
+            });
 
             edCantidad.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
@@ -187,18 +251,42 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             });
 
 
+
             acNombre.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View view, boolean b) {
-                    if (!b)
-                        //if (!listaIngrediente.get(position).getNombre().equals(acNombre.getText().toString())) {
-                        ingrediente.setNombre( ((AutoCompleteTextView)view).getText().toString());
-                    //}
-                    //notifyItemChanged(position);
+                    if (!b) {
+                        ingrediente.setNombre(((AutoCompleteTextView) view).getText().toString());
+                    }
+                }
+            });
+
+
+            spinUnidad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    ingrediente.setUnidad(spinUnidad.getSelectedItem().toString());
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
 
                 }
             });
         }
 
+
     }
+    private int getSpinnerIndex(Spinner spinner, String myString){
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+
 }

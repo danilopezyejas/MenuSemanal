@@ -43,17 +43,23 @@ public class IngredientesFragment extends Fragment {
     private  ArrayList<Ingrediente> listaIngredientes;
     private  ArrayList<Ingrediente> aBorrar;
     private DatabaseReference db;
-    ProgressBar progressBar;
     FloatingActionButton btnAgregarIngrediente;
+    private ProgressBar espera;
 
     private  TextView textView;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         View root = inflater.inflate(R.layout.fragment_ingredientes, container, false);
+
+        //Mostrar spinner
+        espera = root.findViewById(R.id.espera);
+        espera.setVisibility(View.VISIBLE);
 
         recyclerView = root.findViewById(R.id.recycleIngredientes);
         listaIngredientes = new ArrayList<>();
         aBorrar = new ArrayList<>();
+
 
         //Obtengo de la base la tabla Ingredientes
         db = FirebaseDatabase.getInstance().getReference("Ingredientes");
@@ -118,6 +124,8 @@ public class IngredientesFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapterDatosIngredientes = new AdapterDatosIngredientes(listaIngredientes, btnAgregarIngrediente, getContext());
         recyclerView.setAdapter(adapterDatosIngredientes);
+//        ocultar spinner
+        espera.setVisibility(View.INVISIBLE);
     }
 
 }

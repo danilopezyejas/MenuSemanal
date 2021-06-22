@@ -149,6 +149,7 @@ public class AgregarIngredientes extends Fragment {
         });
 
         agregar = (Button) view.findViewById(R.id.btnAceptarIngredientes);
+//Si voy a modificar cambio la apariencia del boton
         if (getArguments() != null) {
             agregar.setText("Modificar");
             agregar.setTextColor(Color.RED);
@@ -164,14 +165,14 @@ public class AgregarIngredientes extends Fragment {
                     String unidad = spUnidad.getSelectedItem().toString();
 
                     if (agregar.getText().equals("Agregar")) {
-         //Creo el id (me lo proporciona firebase)
+//Creo el id (me lo proporciona firebase)
                         String idIngrediente = db.push().getKey();
                         Ingrediente newIngrediente = new Ingrediente(idIngrediente, nombre, precio, cantidad, unidad);
 //lo agrego a la base de datos
                         db.child("Ingredientes").child(idIngrediente).setValue(newIngrediente).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull @NotNull Task<Void> task2) {
-                  //Compruebo si se agrego bien a la base
+    //Compruebo si se agrego bien a la base
                                 if (task2.isComplete()) {
                                     Navigation.findNavController(view).navigate(R.id.ir_a_altaIngredientes);
                                     closeKeyBoard(view);
@@ -184,9 +185,9 @@ public class AgregarIngredientes extends Fragment {
                         Ingrediente newIngrediente = new Ingrediente(id, nombre, precio, cantidad, unidad);
                         db.child("Ingredientes").child(id).setValue(newIngrediente).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
-                            public void onComplete(@NonNull @NotNull Task<Void> task2) {
-               //Compruebo si se agrego bien a la base
-                                if (task2.isComplete()) {
+                            public void onComplete(@NonNull @NotNull Task<Void> task3) {
+    //Compruebo si se modifico bien la base
+                                if (task3.isComplete()) {
                                     Navigation.findNavController(view).navigate(R.id.ir_a_altaIngredientes);
                                     closeKeyBoard(view);
                                     Toast.makeText(getActivity(), "Se modifico!", Toast.LENGTH_SHORT).show();

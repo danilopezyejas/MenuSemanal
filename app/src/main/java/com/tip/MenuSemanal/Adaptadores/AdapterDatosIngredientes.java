@@ -1,7 +1,6 @@
 package com.tip.MenuSemanal.Adaptadores;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,7 +30,6 @@ public class AdapterDatosIngredientes extends RecyclerView.Adapter<AdapterDatosI
     int posant =-1;
     ArrayList<Ingrediente> ingreBorrar;
     Context context;
-    int borrar = 0;
 
     public AdapterDatosIngredientes(ArrayList<Ingrediente> listaIngredientes, FloatingActionButton btnAgregarIngrediente, Context context){
         this.btnAgregarIngrediente = btnAgregarIngrediente;

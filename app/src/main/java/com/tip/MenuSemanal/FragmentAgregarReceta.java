@@ -101,6 +101,16 @@ public class FragmentAgregarReceta extends Fragment {
     }
 
     @Override
+    public void onDestroy() {
+
+        super.onDestroy();
+    }
+
+
+
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -114,18 +124,25 @@ public class FragmentAgregarReceta extends Fragment {
         btnBorrar = (ImageButton) view.findViewById(R.id.btnBorraring);
         btnAceptar=(ImageButton) view.findViewById(R.id.btnAceptarIngredientes);
         txtnombrer.setText(mParam1);
+        btnBorrar.setVisibility(View.INVISIBLE);
         recyclerView = (RecyclerView) view.findViewById(R.id.rvlistaIngredientes);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        recyclerView.setAdapter(new AdapterListaIngredientes(listaIngredientes));
+        recyclerView.setAdapter(new AdapterListaIngredientes(listaIngredientes,btnagregar,btnBorrar));
         cargaRecetas();
 
         btnagregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((AdapterListaIngredientes) Objects.requireNonNull(recyclerView.getAdapter())).nuevoingrediente();
-                ((MainActivity)getActivity()).closeKB(view);
+                Integer resource = (Integer)btnagregar.getTag();
+                if (resource != null && resource != R.drawable.ic_baseline_add_24) {
+                    ((AdapterListaIngredientes) Objects.requireNonNull(recyclerView.getAdapter())).removeSelected();
+                    btnagregar.setImageResource(R.drawable.ic_baseline_add_24);
+                    btnagregar.setTag(R.drawable.ic_baseline_add_24);
+                    btnBorrar.setVisibility(View.INVISIBLE);
+                } else
+                    ((AdapterListaIngredientes) Objects.requireNonNull(recyclerView.getAdapter())).nuevoingrediente();
             }
 
         });
@@ -133,13 +150,10 @@ public class FragmentAgregarReceta extends Fragment {
         btnBorrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                for(Ingrediente ing : listaIngredientes){
-//                    if (ing.getSel() && !ing.getNombre().equals(""))
-//                        db.child("Recetas").child(txtnombrer.getText().toString()).child(ing.getNombre().toString()).removeValue();
-//
-//                }
-
-                ((AdapterListaIngredientes) Objects.requireNonNull(recyclerView.getAdapter())).removeSelected();
+                    ((AdapterListaIngredientes) Objects.requireNonNull(recyclerView.getAdapter())).cancelSelected();
+                    btnagregar.setImageResource(R.drawable.ic_baseline_add_24);
+                    btnagregar.setTag(R.drawable.ic_baseline_add_24);
+                    btnBorrar.setVisibility(View.INVISIBLE);
 
             }
         });

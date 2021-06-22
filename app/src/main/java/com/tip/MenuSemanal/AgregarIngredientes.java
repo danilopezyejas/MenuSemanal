@@ -173,7 +173,8 @@ public class AgregarIngredientes extends Fragment {
                             public void onComplete(@NonNull @NotNull Task<Void> task2) {
                   //Compruebo si se agrego bien a la base
                                 if (task2.isComplete()) {
-                                    Navigation.findNavController(view).navigate(R.id.ir_a_altaIngredientes);
+                                    //Navigation.findNavController(view).navigate(R.id.ir_a_altaIngredientes);
+                                    Navigation.findNavController(view).navigateUp();
                                     closeKeyBoard(view);
                                 } else {
                                     Toast.makeText(getActivity(), "Ocurrio un error!", Toast.LENGTH_SHORT).show();
@@ -187,7 +188,8 @@ public class AgregarIngredientes extends Fragment {
                             public void onComplete(@NonNull @NotNull Task<Void> task2) {
                //Compruebo si se agrego bien a la base
                                 if (task2.isComplete()) {
-                                    Navigation.findNavController(view).navigate(R.id.ir_a_altaIngredientes);
+                                    //Navigation.findNavController(view).navigate(R.id.ir_a_altaIngredientes);
+                                    Navigation.findNavController(view).navigateUp();
                                     closeKeyBoard(view);
                                     Toast.makeText(getActivity(), "Se modifico!", Toast.LENGTH_SHORT).show();
                                 } else {

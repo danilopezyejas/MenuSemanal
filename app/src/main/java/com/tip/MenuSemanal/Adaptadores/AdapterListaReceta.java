@@ -6,16 +6,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.tip.MenuSemanal.R;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import Clases.Menu;
 import Clases.Recetas;
 
 import static androidx.navigation.Navigation.findNavController;
@@ -28,8 +36,16 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
     View viewant = null;
     int posant =-1;
     boolean multiselect = false;
-    public AdapterListaReceta(@NonNull ArrayList<Recetas> lRecetas) {
+    String previo = "";
+    String comida = "";
+    DatabaseReference db;
+
+
+    public AdapterListaReceta(@NonNull ArrayList<Recetas> lRecetas, String previo, String comida) {
         listaRecetas = lRecetas;
+        this.previo = previo;
+        this.comida =comida;
+        db = FirebaseDatabase.getInstance().getReference();
     }
 
     @NonNull
@@ -68,8 +84,24 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
                 Bundle arg = new Bundle();
 
                 if (!multiselect) {
-                    arg.putString("param1", receta.getNombre());
-                    findNavController(holder.itemView).navigate(R.id.fragmentAgregarReceta, arg);
+                    if (previo.equals("menu")){
+                        String idMenu = db.push().getKey();
+                        long millis=System.currentTimeMillis();
+                        Menu newMenu = new Menu(millis+604800000,receta.getNombre(), comida);
+
+                        db.child("Menu-Semana").child(idMenu).setValue(newMenu).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                if (task.isComplete()) {
+                                    Navigation.findNavController(holder.itemView).navigate(R.id.navigation_dias_semana_a_listado_recetas);
+                                }
+                            }
+                        });
+
+                    }else {
+                        arg.putString("param1", receta.getNombre());
+                        findNavController(holder.itemView).navigate(R.id.fragmentAgregarReceta, arg);
+                    }
                 }
             }
         });
@@ -98,9 +130,6 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
                 holder.item.setBackgroundColor(purple_200);
         } else
             holder.item.setBackgroundColor(Color.TRANSPARENT);
-
-
-
 
     }
 
@@ -156,7 +185,13 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
             txtnombre=itemView.findViewById(R.id.txtNombreReceta);
             txtdescripcion=itemView.findViewById(R.id.txtDescripcionReceta);
 
+            FloatingActionButton btnAddMenu = itemView.findViewById(R.id.btnAgregarMenu);
+            btnAddMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                }
+            });
         }
 
 //        public void asignardatos(String nombre, String descripcion) {

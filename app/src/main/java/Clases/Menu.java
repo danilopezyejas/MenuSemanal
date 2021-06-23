@@ -3,29 +3,29 @@ package Clases;
 import java.util.Date;
 
 public class Menu {
-    private Date fecha;
-    private Recetas receta;
-    private boolean cena;
+    private long fecha;
+    private String receta;
+    private String comida;
 
     public Menu() {
     }
 
-    public Menu(Date fecha, Recetas receta, boolean cena) {
+    public Menu(long fecha, String receta, String comida) {
         this.fecha = fecha;
         this.receta = receta;
-        this.cena = cena;
+        this.comida = comida;
     }
 
-    public Date getFecha() {
+    public long getFecha() {
         return fecha;
     }
 
-    public Recetas getReceta() {
+    public String getReceta() {
         return receta;
     }
 
-    public boolean isCena() {
-        return cena;
+    public String getComida() {
+        return comida;
     }
 
 }

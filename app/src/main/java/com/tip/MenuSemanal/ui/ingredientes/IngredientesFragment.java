@@ -87,7 +87,7 @@ public class IngredientesFragment extends Fragment {
         btnAgregarIngrediente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//        Pregunto que icono tiene el boton
+//        Pregunto que icono tiene el boton si es borrar entra si tiene el carrito se va al else
                 Integer resource = (Integer)btnAgregarIngrediente.getTag();
                 if (resource != null && resource != R.drawable.ic_agregar){
                     aBorrar = adapterDatosIngredientes.getIngreBorrar();

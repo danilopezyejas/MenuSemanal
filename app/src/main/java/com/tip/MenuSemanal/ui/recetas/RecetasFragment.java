@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tip.MenuSemanal.Adaptadores.AdapterListaReceta;
+import com.tip.MenuSemanal.AgregarIngredientes;
 import com.tip.MenuSemanal.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -35,12 +36,39 @@ import static androidx.navigation.Navigation.findNavController;
 
 public class RecetasFragment extends Fragment {
 
+    private static final String PREVIO = "previo";
+    private static final String COMIDA = "comida";
+
+    private String previo ="";
+    private String comida ="";
 
     private RecetasViewModel recetasViewModel;
     private RecyclerView recyclerView;
     private ArrayList<Recetas> recetas;
     private DatabaseReference db;
 
+    private FloatingActionButton btnA;
+    private FloatingActionButton btnE;
+
+    public RecetasFragment(){ }
+
+    public static RecetasFragment  newInstance (String previo, String comida){
+        RecetasFragment fragment = new RecetasFragment();
+        Bundle args = new Bundle();
+        args.putString(PREVIO,previo);
+        args.putString(COMIDA,comida);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            previo = getArguments().getString(PREVIO);
+            comida = getArguments().getString(COMIDA);
+        }
+    }
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -87,7 +115,7 @@ public class RecetasFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        recyclerView.setAdapter(new AdapterListaReceta(recetas));
+        recyclerView.setAdapter(new AdapterListaReceta(recetas, previo, comida));
         recyclerView.getAdapter().notifyDataSetChanged();
 
 
@@ -97,7 +125,7 @@ public class RecetasFragment extends Fragment {
                         // .. textView.setText(s);
                     }});
 
-            FloatingActionButton btnA = root.findViewById(R.id.btnAgregarReceta);
+            btnA = root.findViewById(R.id.btnAgregarReceta);
             btnA.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -109,7 +137,7 @@ public class RecetasFragment extends Fragment {
 
         });
 
-            FloatingActionButton btnE = root.findViewById(R.id.btnEliminarReceta);
+            btnE = root.findViewById(R.id.btnEliminarReceta);
             btnE.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -124,6 +152,11 @@ public class RecetasFragment extends Fragment {
 
                 }
             });
+
+        if (previo.equals("menu")){
+            btnA.setVisibility(root.INVISIBLE);
+            btnE.setVisibility(root.INVISIBLE);
+        }
 
 
         return root;

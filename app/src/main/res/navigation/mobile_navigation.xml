@@ -19,6 +19,17 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navigation_dias_semana_a_listado_recetas"
+        android:name="com.tip.MenuSemanal.dias_semana"
+        tools:layout="@layout/fragment_dias_semana">
+
+        <action
+            android:id="@+id/action_dias_semana_to_navigation_recetas"
+            app:destination="@id/navigation_recetas" />
+
+    </fragment>
+
+    <fragment
         android:id="@+id/navigation_recetas"
         android:name="com.tip.MenuSemanal.ui.recetas.RecetasFragment"
         android:label="@string/title_recetas"

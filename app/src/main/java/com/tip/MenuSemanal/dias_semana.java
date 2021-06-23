@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +26,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 import Clases.Menu;
+
+import static androidx.navigation.Navigation.findNavController;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,9 +49,14 @@ public class dias_semana extends Fragment {
     private AdapterDias adapterDias;
     private DatabaseReference db;
     private ArrayList<Menu> listaMenu;
-    private FloatingActionButton addRecetaMenu;
+    private FloatingActionButton addDesayuno;
+    private FloatingActionButton addAlmuerzo;
+    private FloatingActionButton addMerienda;
+    private FloatingActionButton addCena;
 
-    private ProgressBar espera;
+    Bundle paraRecetas = new Bundle();
+
+//    private ProgressBar espera;
 
     public dias_semana() {
         // Required empty public constructor
@@ -88,8 +96,8 @@ public class dias_semana extends Fragment {
         View view = inflater.inflate(R.layout.fragment_dias_semana, container, false);
 
         //Mostrar spinner
-        espera = view.findViewById(R.id.esperaMenu);
-        espera.setVisibility(View.VISIBLE);
+//        espera = view.findViewById(R.id.esperaMenu);
+//        espera.setVisibility(View.VISIBLE);
 
         listaMenu = new ArrayList<>();
 //        recyclerView = view.findViewById(R.id.recycleSemana);
@@ -100,10 +108,30 @@ public class dias_semana extends Fragment {
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                TextView textView;
 
                 listaMenu.clear();
                 for(DataSnapshot menuDataSnap : snapshot.getChildren()){
                     Menu menu = menuDataSnap.getValue(Menu.class);
+
+                    switch (menu.getComida()){
+                        case "desayuno":
+                            textView = view.findViewById(R.id.nomRecetaDesayuno);
+                            textView.setText(menu.getReceta());
+                            break;
+                        case "almuerzo":
+                            textView = view.findViewById(R.id.nomRecetaAlmuerzo);
+                            textView.setText(menu.getReceta());
+                            break;
+                        case "merienda":
+                            textView = view.findViewById(R.id.nomRecetaMerienda);
+                            textView.setText(menu.getReceta());
+                            break;
+                        case "cena":
+                            textView = view.findViewById(R.id.nomRecetaCena);
+                            textView.setText(menu.getReceta());
+                            break;
+                    }
                     listaMenu.add(menu);
                 }
                 mostrar();
@@ -115,11 +143,50 @@ public class dias_semana extends Fragment {
             }
         });
 
-        addRecetaMenu = view.findViewById(R.id.addDesayuno);
-        addRecetaMenu.setOnClickListener(new View.OnClickListener() {
+        addDesayuno = view.findViewById(R.id.addDesayuno);
+        addDesayuno.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                paraRecetas.putString("previo","menu");
+                paraRecetas.putString("comida","desayuno");
+                findNavController(view).navigate(R.id.navigation_recetas, paraRecetas);
+            }
+        });
 
+        addDesayuno = view.findViewById(R.id.addDesayuno);
+        addDesayuno.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                paraRecetas.putString("previo","menu");
+                paraRecetas.putString("comida","desayuno");
+                findNavController(view).navigate(R.id.navigation_recetas, paraRecetas);
+            }
+        });
+        addAlmuerzo = view.findViewById(R.id.addAlmuerzo);
+        addAlmuerzo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                paraRecetas.putString("previo","menu");
+                paraRecetas.putString("comida","almuerzo");
+                findNavController(view).navigate(R.id.navigation_recetas, paraRecetas);
+            }
+        });
+        addMerienda = view.findViewById(R.id.addMerienda);
+        addMerienda.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                paraRecetas.putString("previo","menu");
+                paraRecetas.putString("comida","merienda");
+                findNavController(view).navigate(R.id.navigation_recetas, paraRecetas);
+            }
+        });
+        addCena = view.findViewById(R.id.addCena);
+        addCena.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                paraRecetas.putString("previo","menu");
+                paraRecetas.putString("comida","cena");
+                findNavController(view).navigate(R.id.navigation_recetas, paraRecetas);
             }
         });
 
@@ -133,7 +200,7 @@ public class dias_semana extends Fragment {
 //        recyclerView.setAdapter(adapterDias);
 
         //        ocultar spinner
-        espera.getLayoutParams().height = 0;
-        espera.setVisibility(View.INVISIBLE);
+//        espera.getLayoutParams().height = 0;
+//        espera.setVisibility(View.INVISIBLE);
     }
 }

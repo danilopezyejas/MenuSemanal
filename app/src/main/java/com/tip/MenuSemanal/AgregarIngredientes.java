@@ -81,18 +81,7 @@ public class AgregarIngredientes extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param paramNom Parameter 1.
-     * @param paramPre Parameter 2.
-     * @param paramCant Parameter 3.
-     * @param paramUni Parameter 4.
-     *  @param id Parameter 4.
-     * @return A new instance of fragment AgregarIngredientes.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static AgregarIngredientes newInstance(String paramNom, String paramPre, String paramCant, String paramUni, String id) {
         AgregarIngredientes fragment = new AgregarIngredientes();
         Bundle args = new Bundle();

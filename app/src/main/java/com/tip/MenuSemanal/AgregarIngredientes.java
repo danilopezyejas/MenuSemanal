@@ -16,6 +16,7 @@ import androidx.navigation.Navigation;
 
 import android.speech.RecognizerIntent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,10 +30,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -45,6 +50,7 @@ import Clases.Ingrediente;
 import Enumeracion.unidades;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.ContentValues.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -146,7 +152,7 @@ public class AgregarIngredientes extends Fragment {
         agregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-        //Me aseguro de que el usuario alla completado todos los campos
+                //Me aseguro de que el usuario alla completado todos los campos
                 if (!isEmpty(etNombre) && !isEmpty(etPrecio) && !isEmpty(etCantidad)) {
                     String nombre = etNombre.getText().toString();
                     float precio = Float.parseFloat(etPrecio.getText().toString());
@@ -161,7 +167,7 @@ public class AgregarIngredientes extends Fragment {
                         db.child("Ingredientes").child(idIngrediente).setValue(newIngrediente).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull @NotNull Task<Void> task2) {
-    //Compruebo si se agrego bien a la base
+                                //Compruebo si se agrego bien a la base
                                 if (task2.isComplete()) {
                                     Navigation.findNavController(view).navigate(R.id.ir_a_altaIngredientes);
                                     closeKeyBoard(view);
@@ -175,7 +181,7 @@ public class AgregarIngredientes extends Fragment {
                         db.child("Ingredientes").child(id).setValue(newIngrediente).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull @NotNull Task<Void> task3) {
-    //Compruebo si se modifico bien la base
+                                //Compruebo si se modifico bien la base
                                 if (task3.isComplete()) {
                                     Navigation.findNavController(view).navigate(R.id.ir_a_altaIngredientes);
                                     closeKeyBoard(view);
@@ -237,7 +243,7 @@ public class AgregarIngredientes extends Fragment {
         return etText.getText().toString().trim().length() == 0;
     }
 
-//    Devuelve la posicion de la unidad seleccionada
+    //    Devuelve la posicion de la unidad seleccionada
     private int getIndex(Spinner spinner, String myString){
         for (int i=0;i<spinner.getCount();i++){
             if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){

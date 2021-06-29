@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "852222172811",
-    "firebase_url": "https://menu-semanal-tip-default-rtdb.firebaseio.com",
-    "project_id": "menu-semanal-tip",
-    "storage_bucket": "menu-semanal-tip.appspot.com"
+    "project_number": "839048609047",
+    "firebase_url": "https://menu-semanal-tip-185fd-default-rtdb.firebaseio.com",
+    "project_id": "menu-semanal-tip-185fd",
+    "storage_bucket": "menu-semanal-tip-185fd.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:852222172811:android:c0ac4c26adf96bd40ffe8e",
+        "mobilesdk_app_id": "1:839048609047:android:3ee3c79967557b10804b52",
         "android_client_info": {
           "package_name": "com.tip.MenuSemanal"
         }
       },
       "oauth_client": [
         {
-          "client_id": "852222172811-8dao3u6b6rk9h8nlcj7pnebi9a9ios55.apps.googleusercontent.com",
+          "client_id": "839048609047-mmev0stpm7v0pqa260o34m23rlj6kdar.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCvDA9rsHw9JpoCsfC69PBI3jIPkfGussk"
+          "current_key": "AIzaSyCxvblvMCf-OOH2fEE1Ws08Kr1Io57ANwE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "852222172811-8dao3u6b6rk9h8nlcj7pnebi9a9ios55.apps.googleusercontent.com",
+              "client_id": "839048609047-mmev0stpm7v0pqa260o34m23rlj6kdar.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

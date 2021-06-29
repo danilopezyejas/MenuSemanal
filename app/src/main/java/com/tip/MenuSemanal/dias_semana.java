@@ -4,13 +4,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,7 +21,10 @@ import com.tip.MenuSemanal.Adaptadores.AdapterDias;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import Clases.Menu;
 
@@ -48,7 +49,7 @@ public class dias_semana extends Fragment {
     private RecyclerView recyclerView;
     private AdapterDias adapterDias;
     private DatabaseReference db;
-    private ArrayList<Menu> listaMenu;
+//    private ArrayList<Menu> listaMenu;
     private FloatingActionButton addDesayuno;
     private FloatingActionButton addAlmuerzo;
     private FloatingActionButton addMerienda;
@@ -56,10 +57,15 @@ public class dias_semana extends Fragment {
 
     Bundle paraRecetas = new Bundle();
 
-//    private ProgressBar espera;
+    private int dia;
+
 
     public dias_semana() {
-        // Required empty public constructor
+    }
+
+
+    public dias_semana(int dia) {
+        this.dia = dia;
     }
 
     /**
@@ -95,46 +101,31 @@ public class dias_semana extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dias_semana, container, false);
 
-        //Mostrar spinner
-//        espera = view.findViewById(R.id.esperaMenu);
-//        espera.setVisibility(View.VISIBLE);
-
-        listaMenu = new ArrayList<>();
-//        recyclerView = view.findViewById(R.id.recycleSemana);
-
         db = FirebaseDatabase.getInstance().getReference("Menu-Semana");
 
         //Evaluo si trajo algo
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                TextView textView;
 
-                listaMenu.clear();
                 for(DataSnapshot menuDataSnap : snapshot.getChildren()){
                     Menu menu = menuDataSnap.getValue(Menu.class);
 
                     switch (menu.getComida()){
                         case "desayuno":
-                            textView = view.findViewById(R.id.nomRecetaDesayuno);
-                            textView.setText(menu.getReceta());
+                            completarDatos(R.id.nomRecetaDesayuno,menu, view);
                             break;
                         case "almuerzo":
-                            textView = view.findViewById(R.id.nomRecetaAlmuerzo);
-                            textView.setText(menu.getReceta());
+                            completarDatos(R.id.nomRecetaAlmuerzo,menu, view);
                             break;
                         case "merienda":
-                            textView = view.findViewById(R.id.nomRecetaMerienda);
-                            textView.setText(menu.getReceta());
+                            completarDatos(R.id.nomRecetaMerienda,menu, view);
                             break;
                         case "cena":
-                            textView = view.findViewById(R.id.nomRecetaCena);
-                            textView.setText(menu.getReceta());
+                            completarDatos(R.id.nomRecetaCena,menu, view);
                             break;
                     }
-                    listaMenu.add(menu);
                 }
-                mostrar();
             }
 
             @Override
@@ -193,14 +184,19 @@ public class dias_semana extends Fragment {
         return view;
     }
 
-    //    Mando la lista que descargue de la base al Adapter para que lo muestre en el recycler
-    private  void mostrar(){
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapterDias = new AdapterDias(listaMenu, getContext());
-//        recyclerView.setAdapter(adapterDias);
+    private void completarDatos(int id, Menu menu, View view){
 
-        //        ocultar spinner
-//        espera.getLayoutParams().height = 0;
-//        espera.setVisibility(View.INVISIBLE);
+        TextView textView;
+
+        Date currentDate = new Date (menu.getFecha());
+        Calendar c = Calendar.getInstance();
+        c.setTime(currentDate);
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+//Si el dia de la semana coincide con el dia de la receta lo agrego
+        if (dayOfWeek == this.dia){
+            textView = view.findViewById(id);
+            textView.setText(menu.getReceta());
+        }
+
     }
 }

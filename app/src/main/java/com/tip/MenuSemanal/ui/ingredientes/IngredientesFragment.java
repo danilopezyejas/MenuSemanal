@@ -115,10 +115,6 @@ public class IngredientesFragment extends Fragment {
         return root;
     }
 
-    private void cargarPreferencias() {
-        SharedPreferences preferences = getActivity().getSharedPreferences("ingredienteGuardados", Context.MODE_PRIVATE);
-    }
-
 //    Mando la lista que descargue de la base al Adapter para que lo muestre en el recycler
     private  void mostrar(){
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

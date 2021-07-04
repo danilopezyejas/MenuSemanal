@@ -31,7 +31,7 @@ public class AdapterDias extends RecyclerView.Adapter<AdapterDias.ViewHolderDato
     @NotNull
     @Override
     public ViewHolderDatos onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_dias ,null,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_dias_semana ,null,false);
         return new ViewHolderDatos(view);
     }
 

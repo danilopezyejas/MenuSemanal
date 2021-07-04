@@ -37,6 +37,9 @@
         <action
             android:id="@+id/action_navigation_recetas_to_fragmentAgregarReceta"
             app:destination="@id/fragmentAgregarReceta" />
+        <action
+            android:id="@+id/action_navigation_recetas_to_navigation_home"
+            app:destination="@id/navigation_home" />
     </fragment>
 
     <fragment

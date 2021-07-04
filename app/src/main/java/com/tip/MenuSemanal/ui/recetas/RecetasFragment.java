@@ -38,9 +38,11 @@ public class RecetasFragment extends Fragment {
 
     private static final String PREVIO = "previo";
     private static final String COMIDA = "comida";
+    private static final String DIA = "dia";
 
     private String previo ="";
     private String comida ="";
+    private String dia ="";
 
     private RecetasViewModel recetasViewModel;
     private RecyclerView recyclerView;
@@ -52,11 +54,12 @@ public class RecetasFragment extends Fragment {
 
     public RecetasFragment(){ }
 
-    public static RecetasFragment  newInstance (String previo, String comida){
+    public static RecetasFragment  newInstance (String previo, String comida, String dia){
         RecetasFragment fragment = new RecetasFragment();
         Bundle args = new Bundle();
         args.putString(PREVIO,previo);
         args.putString(COMIDA,comida);
+        args.putString(DIA,dia);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,6 +70,7 @@ public class RecetasFragment extends Fragment {
         if (getArguments() != null) {
             previo = getArguments().getString(PREVIO);
             comida = getArguments().getString(COMIDA);
+            dia = getArguments().getString(DIA);
         }
     }
 
@@ -115,7 +119,7 @@ public class RecetasFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        recyclerView.setAdapter(new AdapterListaReceta(recetas, previo, comida));
+        recyclerView.setAdapter(new AdapterListaReceta(recetas, previo, comida, dia));
         recyclerView.getAdapter().notifyDataSetChanged();
 
 

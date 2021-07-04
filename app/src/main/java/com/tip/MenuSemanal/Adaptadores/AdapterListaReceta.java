@@ -22,6 +22,8 @@ import com.tip.MenuSemanal.R;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import Clases.Menu;
 import Clases.Recetas;
@@ -38,13 +40,18 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
     boolean multiselect = false;
     String previo = "";
     String comida = "";
+    int hoy;
+    int diaAGuardar;
     DatabaseReference db;
 
 
-    public AdapterListaReceta(@NonNull ArrayList<Recetas> lRecetas, String previo, String comida) {
+    public AdapterListaReceta(@NonNull ArrayList<Recetas> lRecetas, String previo, String comida, String dia) {
         listaRecetas = lRecetas;
         this.previo = previo;
         this.comida =comida;
+        if(!dia.equals("")){
+            this.diaAGuardar = Integer.parseInt(dia);
+        }
         db = FirebaseDatabase.getInstance().getReference();
     }
 
@@ -82,22 +89,35 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
                 }
                 notifyItemChanged(position);
                 Bundle arg = new Bundle();
+                Bundle paraHome = new Bundle();
 
                 if (!multiselect) {
                     if (previo.equals("menu")){
                         String idMenu = db.push().getKey();
                         long millis=System.currentTimeMillis();
-                        Menu newMenu = new Menu(millis+604800000,receta.getNombre(), comida);
+                        int masDias;
+                        //Obtengo el dia de hoy para poder calcular que dia es el que esta guardando
+                        Date currentDate = new Date ();
+                        Calendar c = Calendar.getInstance();
+                        c.setTime(currentDate);
+                        hoy = c.get(Calendar.DAY_OF_WEEK)-1;
+                        if (diaAGuardar >= hoy){
+                            masDias = 86400000*(diaAGuardar-hoy);
+                        }else{
+                            masDias = 86400000*(7+diaAGuardar-hoy);
+                        }
+                        Menu newMenu = new Menu(millis+masDias,receta.getNombre(), comida, idMenu);
 
+                        //Para guardar un nuevo menu
                         db.child("Menu-Semana").child(idMenu).setValue(newMenu).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull @NotNull Task<Void> task) {
                                 if (task.isComplete()) {
-                                    Navigation.findNavController(holder.itemView).navigate(R.id.navigation_dias_semana_a_listado_recetas);
+                                    paraHome.putString("diaGuardado", Integer.toString(diaAGuardar));
+                                    findNavController(holder.itemView).navigate(R.id.navigation_home, paraHome);
                                 }
                             }
                         });
-
                     }else {
                         arg.putString("param1", receta.getNombre());
                         findNavController(holder.itemView).navigate(R.id.fragmentAgregarReceta, arg);
@@ -194,10 +214,6 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
             });
         }
 
-//        public void asignardatos(String nombre, String descripcion) {
-//            txtnombre.setText(nombre);
-//            txtdescripcion.setText(descripcion);
-//        }
         public void asignardatos(Recetas receta) {
             txtnombre.setText(receta.getNombre());
             txtdescripcion.setText(receta.getDescripcion());

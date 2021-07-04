@@ -32,6 +32,16 @@ import static android.content.ContentValues.TAG;
 
 public class HomeFragment extends Fragment {
 
+    int diaGuardado = -1;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            diaGuardado = Integer.parseInt(getArguments().getString("diaGuardado"));
+        }
+    }
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -49,11 +59,6 @@ public class HomeFragment extends Fragment {
 
         pager.setAdapter(adapterPestanias);
 
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
-
-        myRef.setValue("Hello, World!");
 
         TabLayout tabLayout = root.findViewById(R.id.tab_semana);
 
@@ -86,11 +91,16 @@ public class HomeFragment extends Fragment {
             }
         }).attach();
 
-    //Para iniciar en el dia de la semana que estoy
-        Calendar c = Calendar.getInstance();
-        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-        TabLayout.Tab tab = tabLayout.getTabAt(dayOfWeek-1);
-        tab.select();
+        if (diaGuardado < 0){
+            //Para iniciar en el dia de la semana que estoy
+            Calendar c = Calendar.getInstance();
+            int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+            TabLayout.Tab tab = tabLayout.getTabAt(dayOfWeek-1);
+            tab.select();
+        }else {
+            TabLayout.Tab tab = tabLayout.getTabAt(diaGuardado);
+            tab.select();
+        }
 
         return root;
     }

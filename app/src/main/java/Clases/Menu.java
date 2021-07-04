@@ -6,14 +6,17 @@ public class Menu {
     private long fecha;
     private String receta;
     private String comida;
+    private String id;
 
     public Menu() {
     }
 
-    public Menu(long fecha, String receta, String comida) {
+    public Menu(long fecha, String receta, String comida, String id) {
         this.fecha = fecha;
         this.receta = receta;
         this.comida = comida;
+        this.id = id;
+
     }
 
     public long getFecha() {
@@ -27,5 +30,7 @@ public class Menu {
     public String getComida() {
         return comida;
     }
+
+    public String getId() { return  id;}
 
 }

@@ -29,14 +29,16 @@ android:orientation="vertical">
 
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:id="@+id/imgDesayuno"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:src="@drawable/desayuno"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginStart="5dp"
-                android:contentDescription="@string/desayuno"/>
+                android:contentDescription="@string/desayuno"
+                android:visibility="invisible"/>
 
             <LinearLayout
                 android:id="@+id/linearLayout3"
@@ -79,7 +81,7 @@ android:orientation="vertical">
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:maxImageSize="50dp"
-                app:srcCompat="@android:drawable/ic_input_add"
+                app:srcCompat="@drawable/ic_add"
                 android:contentDescription="@string/almuerzo"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -95,14 +97,16 @@ android:orientation="vertical">
 
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:id="@+id/imgAlmuerzo"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:src="@drawable/almuerzo"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginStart="5dp"
-                android:contentDescription="@string/almuerzo"/>
+                android:contentDescription="@string/almuerzo"
+                android:visibility="invisible"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -144,7 +148,7 @@ android:orientation="vertical">
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:maxImageSize="50dp"
-                app:srcCompat="@android:drawable/ic_input_add"
+                app:srcCompat="@drawable/ic_add"
                 android:contentDescription="@string/almuerzo"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -160,14 +164,16 @@ android:orientation="vertical">
 
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:id="@+id/imgMerienda"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:src="@drawable/merienda"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginStart="5dp"
-                android:contentDescription="@string/merienda"/>
+                android:contentDescription="@string/merienda"
+                android:visibility="invisible"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -209,7 +215,7 @@ android:orientation="vertical">
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:maxImageSize="50dp"
-                app:srcCompat="@android:drawable/ic_input_add"
+                app:srcCompat="@drawable/ic_add"
                 android:contentDescription="@string/merienda"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -225,14 +231,16 @@ android:orientation="vertical">
 
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:id="@+id/imgCena"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:src="@drawable/cena"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginStart="5dp"
-                android:contentDescription="@string/cena"/>
+                android:contentDescription="@string/cena"
+                android:visibility="invisible"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -274,7 +282,7 @@ android:orientation="vertical">
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:maxImageSize="50dp"
-                app:srcCompat="@android:drawable/ic_input_add"
+                app:srcCompat="@drawable/ic_add"
                 android:contentDescription="@string/cena"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

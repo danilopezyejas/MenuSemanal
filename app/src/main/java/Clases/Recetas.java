@@ -6,6 +6,8 @@ public class Recetas {
     String nombre;
     String descripcion;
     boolean Sel;
+    private String idIngrediente;
+    private String nombreIngrediente;
 
     public Recetas(){
         super();
@@ -17,8 +19,29 @@ public class Recetas {
         this.Sel= false;
     }
 
+
     public String getNombre() {
         return this.nombre;
+    }
+
+    public void setIdIngrediente(String idIngrediente) {
+        this.idIngrediente = idIngrediente;
+    }
+
+    public void setNombreIngrediente(String nombreIngrediente) {
+        this.nombreIngrediente = nombreIngrediente;
+    }
+
+    public boolean isSel() {
+        return Sel;
+    }
+
+    public String getIdIngrediente() {
+        return idIngrediente;
+    }
+
+    public String getNombreIngrediente() {
+        return nombreIngrediente;
     }
 
     public String getDescripcion(){ return this.descripcion;}

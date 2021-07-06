@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <item
+        android:id="@+id/menuBuscar"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="buscar"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always"/>
     <item
         android:id="@+id/menuBorrar"
-        android:icon="@drawable/ic_baseline_delete_sweep_24"
+        android:icon="@drawable/ic_baseline_delete_24_blanco"
         android:title="Borrar"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/borrar"
+        android:id="@+id/menuAceptar"
         android:icon="@drawable/ic_baseline_done_24"
         android:title="Guardar"
         app:showAsAction="always"/>

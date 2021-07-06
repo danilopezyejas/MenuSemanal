@@ -114,7 +114,8 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
                             public void onComplete(@NonNull @NotNull Task<Void> task) {
                                 if (task.isComplete()) {
                                     paraHome.putString("diaGuardado", Integer.toString(diaAGuardar));
-                                    findNavController(holder.itemView).navigate(R.id.navigation_home, paraHome);
+                                    //findNavController(holder.itemView).navigate(R.id.navigation_home, paraHome);
+                                    findNavController(holder.itemView).navigateUp();
                                 }
                             }
                         });
@@ -205,13 +206,13 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
             txtnombre=itemView.findViewById(R.id.txtNombreReceta);
             txtdescripcion=itemView.findViewById(R.id.txtDescripcionReceta);
 
-            FloatingActionButton btnAddMenu = itemView.findViewById(R.id.btnAgregarMenu);
-            btnAddMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            //FloatingActionButton btnAddMenu = itemView.findViewById(R.id.btnAgregarMenu);
+            //btnAddMenu.setOnClickListener(new View.OnClickListener() {
+              //  @Override
+                //public void onClick(View v) {
 
-                }
-            });
+                //}
+            //});
         }
 
         public void asignardatos(Recetas receta) {

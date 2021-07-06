@@ -61,7 +61,7 @@
     <fragment
         android:id="@+id/fragmentAgregarReceta"
         android:name="com.tip.MenuSemanal.FragmentAgregarReceta"
-        android:label="fragment_agregar_receta"
+        android:label="Detalle Receta"
         tools:layout="@layout/fragment_agregar_receta" >
         <action
             android:id="@+id/action_fragmentAgregarReceta_to_navigation_recetas"

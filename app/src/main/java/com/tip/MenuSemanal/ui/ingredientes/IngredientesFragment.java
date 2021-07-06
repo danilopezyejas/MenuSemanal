@@ -5,9 +5,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tip.MenuSemanal.Adaptadores.AdapterDatosIngredientes;
+import com.tip.MenuSemanal.Adaptadores.AdapterListaReceta;
 import com.tip.MenuSemanal.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -33,6 +38,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 import Clases.Ingrediente;
+import Clases.Recetas;
 
 import static androidx.navigation.Navigation.findNavController;
 
@@ -47,6 +53,57 @@ public class IngredientesFragment extends Fragment {
     private ProgressBar espera;
 
     private  TextView textView;
+
+    public void onCreate(Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menurecetas,menu);
+
+        menu.findItem(R.id.menuBorrar).setVisible(false);
+        menu.findItem(R.id.menuAceptar).setVisible(false);
+        final MenuItem searchItem = menu.findItem(R.id.menuBuscar);
+        final SearchView searchView = (SearchView)searchItem.getActionView();//(SearchView) MenuItemCompat.getActionView(searchItem);
+        //permite modificar el hint que el EditText muestra por defecto
+
+        searchView.setQueryHint("busqueda");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //se oculta el EditText
+//                searchView.setQuery("", false);
+  //              searchView.setIconified(true);
+                return true;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                ArrayList<Ingrediente> listabusqueda = new ArrayList<Ingrediente>();
+                for(Ingrediente i : listaIngredientes){
+                    if (i.getNombre().toUpperCase().contains(newText.toUpperCase())) listabusqueda.add(i);
+                }
+                adapterDatosIngredientes = new AdapterDatosIngredientes(listabusqueda, btnAgregarIngrediente, getContext());
+                recyclerView.setAdapter(adapterDatosIngredientes);
+                if (newText.equals("")) mostrar();
+                return true;
+            }
+        });
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
+        int id = item.getItemId();
+        switch (id){
+            case R.id.menuBorrar:
+            default:
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -65,6 +122,7 @@ public class IngredientesFragment extends Fragment {
         db = FirebaseDatabase.getInstance().getReference("Ingredientes");
 
         //Evaluo si trajo algo
+
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {

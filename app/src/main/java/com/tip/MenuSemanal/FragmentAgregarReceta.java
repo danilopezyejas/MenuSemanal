@@ -1,20 +1,28 @@
 package com.tip.MenuSemanal;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +36,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.core.utilities.Utilities;
 import com.tip.MenuSemanal.Adaptadores.AdapterListaIngredientes;
+import com.tip.MenuSemanal.Adaptadores.AdapterListaReceta;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -65,6 +75,7 @@ public class FragmentAgregarReceta extends Fragment {
     ImageButton btnAceptar;
     RecyclerView recyclerView;
     EditText edDescripcion;
+    TextView txtnombrer;
     ArrayList<Ingrediente> listaIngredientes = new ArrayList<Ingrediente>();
     View view;
 
@@ -92,6 +103,7 @@ public class FragmentAgregarReceta extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
@@ -99,6 +111,43 @@ public class FragmentAgregarReceta extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menurecetas,menu);
+
+        menu.findItem(R.id.menuBuscar).setVisible(false);
+        menu.findItem(R.id.menuBorrar).setVisible(false);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
+        int id = item.getItemId();
+        switch (id){
+            case R.id.menuBorrar:
+
+            case R.id.menuAceptar:
+                txtnombrer.requestFocus();
+                String nombreReceta = txtnombrer.getText().toString();
+                if (!nombreReceta.equals("")) {
+                    if(!mParam1.equals(nombreReceta))
+                        existeReceta(nombreReceta);
+                    else {
+                        guardaReceta(nombreReceta);
+                        findNavController(view).navigateUp();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "Ingrese nombre de receta", Toast.LENGTH_LONG).show();
+                }
+
+
+
+        default:
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public void onDestroy() {
@@ -118,11 +167,11 @@ public class FragmentAgregarReceta extends Fragment {
 
 
         view = inflater.inflate(R.layout.fragment_agregar_receta, container, false);
-        TextView txtnombrer =(TextView) view.findViewById(R.id.edNombreReceta);
+        txtnombrer =(TextView) view.findViewById(R.id.edNombreReceta);
         edDescripcion =(EditText) view.findViewById(R.id.edDescripcion);
         btnagregar= (ImageButton) view.findViewById(R.id.btnAgregaring);
         btnBorrar = (ImageButton) view.findViewById(R.id.btnBorraring);
-        btnAceptar=(ImageButton) view.findViewById(R.id.btnAceptarIngredientes);
+        //btnAceptar=(ImageButton) view.findViewById(R.id.btnAceptarIngredientes);
         txtnombrer.setText(mParam1);
         btnBorrar.setVisibility(View.INVISIBLE);
         recyclerView = (RecyclerView) view.findViewById(R.id.rvlistaIngredientes);
@@ -141,8 +190,10 @@ public class FragmentAgregarReceta extends Fragment {
                     btnagregar.setImageResource(R.drawable.ic_baseline_add_24);
                     btnagregar.setTag(R.drawable.ic_baseline_add_24);
                     btnBorrar.setVisibility(View.INVISIBLE);
-                } else
+                } else {
                     ((AdapterListaIngredientes) Objects.requireNonNull(recyclerView.getAdapter())).nuevoingrediente();
+                    recyclerView.scrollToPosition(0);
+                }
             }
 
         });
@@ -158,25 +209,25 @@ public class FragmentAgregarReceta extends Fragment {
             }
         });
 
-            btnAceptar.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View view) {
-                    txtnombrer.requestFocus();
-                    String nombreReceta = txtnombrer.getText().toString();
-                    if (!nombreReceta.equals("")) {
-                       if(!mParam1.equals(nombreReceta))
-                           existeReceta(nombreReceta);
-                       else {
-                           guardaReceta(nombreReceta);
-                           findNavController(view).navigateUp();
-                       }
-                    } else {
-                        Toast.makeText(getActivity(), "Ingrese nombre de receta", Toast.LENGTH_LONG).show();
-                    }
-                }
-
-        });
+//            btnAceptar.setOnClickListener(new View.OnClickListener() {
+//
+//                @Override
+//                public void onClick(View view) {
+//                    txtnombrer.requestFocus();
+//                    String nombreReceta = txtnombrer.getText().toString();
+//                    if (!nombreReceta.equals("")) {
+//                       if(!mParam1.equals(nombreReceta))
+//                           existeReceta(nombreReceta);
+//                       else {
+//                           guardaReceta(nombreReceta);
+//                           findNavController(view).navigateUp();
+//                       }
+//                    } else {
+//                        Toast.makeText(getActivity(), "Ingrese nombre de receta", Toast.LENGTH_LONG).show();
+//                    }
+//                }
+//
+//        });
         return view;
     }
 
@@ -194,8 +245,8 @@ public class FragmentAgregarReceta extends Fragment {
            if (!i.getNombre().equals("")) {
                db2 = FirebaseDatabase.getInstance().getReference("Ingredientes");
 
-               //Evaluo si trajo algo
                DatabaseReference finalDb = db2;
+               //obtenemos la lista de ingredientes
                db2.addListenerForSingleValueEvent(new ValueEventListener() {
                    @Override
                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -211,6 +262,7 @@ public class FragmentAgregarReceta extends Fragment {
                            }
                        }
                        if (noIngresado){
+                            //si no existe el ingrediente lo ingresamos
                             String nuevoid = db.push().getKey();
                             i.setId(nuevoid);
                             finalDb.child(nuevoid).setValue(i);
@@ -308,5 +360,40 @@ public class FragmentAgregarReceta extends Fragment {
         });
     }}
 
+    @NonNull
+    @NotNull
+
+    @Override
+    public Lifecycle getLifecycle() {
+        return super.getLifecycle();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+//            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//
+//                builder.setMessage("hola")
+//                        .setPositiveButton("hola", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int id) {
+//                                Toast.makeText(getContext(), "hola", Toast.LENGTH_SHORT).show();// FIRE ZE MISSILES!
+//
+//                                notifyAll();
+//
+//                            }
+//                        })
+//                        .setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int id) {
+//                                // User cancelled the dialog
+//                            notifyAll();
+//                            }
+//                        });
+//                // Create the AlertDialog object and return it
+//                builder.create().show();
+//
+//
+//
+//
+    }
 
 }

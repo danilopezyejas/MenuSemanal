@@ -107,6 +107,9 @@ public class FragmentAgregarReceta extends Fragment {
     }
 
 
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -115,24 +118,24 @@ public class FragmentAgregarReceta extends Fragment {
 
 
         view = inflater.inflate(R.layout.fragment_agregar_receta, container, false);
-        TextView txtnombrer = (TextView) view.findViewById(R.id.edNombreReceta);
-        edDescripcion = (EditText) view.findViewById(R.id.edDescripcion);
-        btnagregar = (ImageButton) view.findViewById(R.id.btnAgregaring);
+        TextView txtnombrer =(TextView) view.findViewById(R.id.edNombreReceta);
+        edDescripcion =(EditText) view.findViewById(R.id.edDescripcion);
+        btnagregar= (ImageButton) view.findViewById(R.id.btnAgregaring);
         btnBorrar = (ImageButton) view.findViewById(R.id.btnBorraring);
-        btnAceptar = (ImageButton) view.findViewById(R.id.btnAceptarIngredientes);
+        btnAceptar=(ImageButton) view.findViewById(R.id.btnAceptarIngredientes);
         txtnombrer.setText(mParam1);
         btnBorrar.setVisibility(View.INVISIBLE);
         recyclerView = (RecyclerView) view.findViewById(R.id.rvlistaIngredientes);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        recyclerView.setAdapter(new AdapterListaIngredientes(listaIngredientes, btnagregar, btnBorrar));
+        recyclerView.setAdapter(new AdapterListaIngredientes(listaIngredientes,btnagregar,btnBorrar));
         cargaRecetas();
 
         btnagregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Integer resource = (Integer) btnagregar.getTag();
+                Integer resource = (Integer)btnagregar.getTag();
                 if (resource != null && resource != R.drawable.ic_baseline_add_24) {
                     ((AdapterListaIngredientes) Objects.requireNonNull(recyclerView.getAdapter())).removeSelected();
                     btnagregar.setImageResource(R.drawable.ic_baseline_add_24);
@@ -147,97 +150,97 @@ public class FragmentAgregarReceta extends Fragment {
         btnBorrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((AdapterListaIngredientes) Objects.requireNonNull(recyclerView.getAdapter())).cancelSelected();
-                btnagregar.setImageResource(R.drawable.ic_baseline_add_24);
-                btnagregar.setTag(R.drawable.ic_baseline_add_24);
-                btnBorrar.setVisibility(View.INVISIBLE);
+                    ((AdapterListaIngredientes) Objects.requireNonNull(recyclerView.getAdapter())).cancelSelected();
+                    btnagregar.setImageResource(R.drawable.ic_baseline_add_24);
+                    btnagregar.setTag(R.drawable.ic_baseline_add_24);
+                    btnBorrar.setVisibility(View.INVISIBLE);
 
             }
         });
 
-        btnAceptar.setOnClickListener(new View.OnClickListener() {
+            btnAceptar.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View view) {
-                txtnombrer.requestFocus();
-                String nombreReceta = txtnombrer.getText().toString();
-                if (!nombreReceta.equals("")) {
-                    if (!mParam1.equals(nombreReceta))
-                        existeReceta(nombreReceta);
-                    else {
-                        guardaReceta(nombreReceta);
-                        findNavController(view).navigateUp();
+                @Override
+                public void onClick(View view) {
+                    txtnombrer.requestFocus();
+                    String nombreReceta = txtnombrer.getText().toString();
+                    if (!nombreReceta.equals("")) {
+                       if(!mParam1.equals(nombreReceta))
+                           existeReceta(nombreReceta);
+                       else {
+                           guardaReceta(nombreReceta);
+                           findNavController(view).navigateUp();
+                       }
+                    } else {
+                        Toast.makeText(getActivity(), "Ingrese nombre de receta", Toast.LENGTH_LONG).show();
                     }
-                } else {
-                    Toast.makeText(getActivity(), "Ingrese nombre de receta", Toast.LENGTH_LONG).show();
                 }
-            }
 
         });
         return view;
     }
 
-    private void guardaReceta(String nombreReceta) {
+   private void guardaReceta(String nombreReceta){
         DatabaseReference db2;
 
         //si no es una receta nueva la eliminamos. para luego reescribirla
         if (!mParam1.equals("")) db.child("Recetas").child(mParam1).removeValue();
 
-        //descripcion de receta
+       //descripcion de receta
         db.child("Recetas").child(nombreReceta).child("Descripcion").setValue(edDescripcion.getText().toString());
 
-        //guardamos todos los ingredientes
+       //guardamos todos los ingredientes
         for (Ingrediente i : listaIngredientes) {
-            if (!i.getNombre().equals("")) {
-                db2 = FirebaseDatabase.getInstance().getReference("Ingredientes");
+           if (!i.getNombre().equals("")) {
+               db2 = FirebaseDatabase.getInstance().getReference("Ingredientes");
 
-                //Evaluo si trajo algo
-                DatabaseReference finalDb = db2;
-                db2.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                        boolean noIngresado = true;
+               //Evaluo si trajo algo
+               DatabaseReference finalDb = db2;
+               db2.addListenerForSingleValueEvent(new ValueEventListener() {
+                   @Override
+                   public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                       boolean noIngresado = true;
 
-                        for (DataSnapshot ingredientesDataSnap : snapshot.getChildren()) {
-                            Ingrediente ingrediente = ingredientesDataSnap.getValue(Ingrediente.class);
-                            if (ingrediente.getNombre().equalsIgnoreCase(i.getNombre())) {
-                                i.setId(ingrediente.getId());
-                                db.child("Recetas").child(nombreReceta).child(ingrediente.getNombre()).setValue(i);
-                                noIngresado = false;
-                                break;
-                            }
-                        }
-                        if (noIngresado) {
+                       for(DataSnapshot ingredientesDataSnap : snapshot.getChildren()){
+                           Ingrediente ingrediente = ingredientesDataSnap.getValue(Ingrediente.class);
+                           if(ingrediente.getNombre().equalsIgnoreCase(i.getNombre())) {
+                               i.setId(ingrediente.getId());
+                               db.child("Recetas").child(nombreReceta).child(ingrediente.getNombre()).setValue(i);
+                               noIngresado = false;
+                               break;
+                           }
+                       }
+                       if (noIngresado){
                             String nuevoid = db.push().getKey();
                             i.setId(nuevoid);
-                            //Agrego el ingrediente con cantidad igual a cero
-                            i.setCantidad(0);
                             finalDb.child(nuevoid).setValue(i);
 
                             db.child("Recetas").child(nombreReceta).child(i.getNombre()).setValue(i);
-                        }
-                    }
+                       }
+                   }
 
-                    @Override
-                    public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                   @Override
+                   public void onCancelled(@NonNull @NotNull DatabaseError error) {
 
-                    }
-
-
-                });
+                   }
 
 
-            }
-        }
+               });
+
+
+
+
+           }
+       }
     }
 
 
-    private void nuevoIngrediente(Ingrediente i) {
+    private void nuevoIngrediente(Ingrediente i){
 
     }
 
 
-    private void existeReceta(String nombreReceta) {
+    private void existeReceta (String nombreReceta) {
         db.child("Recetas").orderByKey().equalTo(nombreReceta).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -245,7 +248,7 @@ public class FragmentAgregarReceta extends Fragment {
                     guardaReceta(nombreReceta);
                     findNavController(view).navigateUp();
                 } else
-                    Toast.makeText(getActivity(), "Ya existe receta con nombre: " + nombreReceta, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Ya existe receta con nombre: " + nombreReceta, Toast.LENGTH_LONG).show();
 
             }
 
@@ -257,16 +260,17 @@ public class FragmentAgregarReceta extends Fragment {
     }
 
 
+
     private void cargaRecetas() {
 
-        if (!mParam1.equals("")) {
+        if (!mParam1.equals("")){
             ArrayList<Ingrediente> li = new ArrayList<Ingrediente>();
 
             db.child("Ingredientes").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                    for (DataSnapshot ing : snapshot.getChildren()) {
-                        li.add(ing.getValue(Ingrediente.class));
+                    for( DataSnapshot ing : snapshot.getChildren()){
+                        li.add (ing.getValue(Ingrediente.class));
                     }
                 }
 
@@ -277,35 +281,32 @@ public class FragmentAgregarReceta extends Fragment {
             });
 
             db.child("Recetas").child(mParam1).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                    listaIngredientes.clear();
-                    if (snapshot.child("Descripcion").getValue() != null) {
-                        edDescripcion.setText(snapshot.child("Descripcion").getValue().toString());
-                    }
-                    //
-                    for (DataSnapshot ingredientesDataSnap : snapshot.getChildren()) {
-                        if (!ingredientesDataSnap.getKey().equals("Descripcion")) {
-                            Ingrediente ingrediente = ingredientesDataSnap.getValue(Ingrediente.class);
-                            for (Ingrediente i : li) {
-                                if (i.getId().equalsIgnoreCase(ingrediente.getId())) {
-                                    ingrediente.setNombre(i.getNombre());
-                                }
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                listaIngredientes.clear();
+                if(snapshot.child("Descripcion").getValue()!=null){
+                    edDescripcion.setText(snapshot.child("Descripcion").getValue().toString()); }
+                //
+                for(DataSnapshot ingredientesDataSnap : snapshot.getChildren()){
+                    if (!ingredientesDataSnap.getKey().equals("Descripcion")){
+                        Ingrediente ingrediente = ingredientesDataSnap.getValue(Ingrediente.class);
+                        for (Ingrediente i : li){
+                            if(i.getId().equalsIgnoreCase(ingrediente.getId())){
+                                ingrediente.setNombre(i.getNombre());
                             }
-                            ingrediente.setSel(false);
-                            listaIngredientes.add(ingrediente);
                         }
-                    }
-                    recyclerView.getAdapter().notifyDataSetChanged();
-                }
+                        ingrediente.setSel(false);
+                        listaIngredientes.add(ingrediente);
+                }}
+                recyclerView.getAdapter().notifyDataSetChanged();
+            }
 
-                @Override
-                public void onCancelled(@NonNull @NotNull DatabaseError error) {
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
 
-                }
-            });
-        }
-    }
+            }
+        });
+    }}
 
 
 }

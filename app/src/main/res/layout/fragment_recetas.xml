@@ -19,6 +19,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvlistaRecetas"
                 android:layout_width="409dp"
@@ -43,5 +45,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="OnClick" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

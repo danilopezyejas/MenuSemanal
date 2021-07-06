@@ -2,21 +2,10 @@ package com.tip.MenuSemanal;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.navigation.Navigation;
-
 import android.speech.RecognizerIntent;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,33 +13,29 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import Clases.Ingrediente;
 import Enumeracion.unidades;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.ContentValues.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -169,7 +154,8 @@ public class AgregarIngredientes extends Fragment {
                             public void onComplete(@NonNull @NotNull Task<Void> task2) {
                                 //Compruebo si se agrego bien a la base
                                 if (task2.isComplete()) {
-                                    Navigation.findNavController(view).navigate(R.id.ir_a_altaIngredientes);
+                                    //Navigation.findNavController(view).navigate(R.id.ir_a_altaIngredientes);
+                                    Navigation.findNavController(view).navigateUp();
                                     closeKeyBoard(view);
                                 } else {
                                     Toast.makeText(getActivity(), "Ocurrio un error!", Toast.LENGTH_SHORT).show();
@@ -183,7 +169,8 @@ public class AgregarIngredientes extends Fragment {
                             public void onComplete(@NonNull @NotNull Task<Void> task3) {
                                 //Compruebo si se modifico bien la base
                                 if (task3.isComplete()) {
-                                    Navigation.findNavController(view).navigate(R.id.ir_a_altaIngredientes);
+                                    //Navigation.findNavController(view).navigate(R.id.ir_a_altaIngredientes);
+                                    Navigation.findNavController(view).navigateUp();
                                     closeKeyBoard(view);
                                     Toast.makeText(getActivity(), "Se modifico!", Toast.LENGTH_SHORT).show();
                                 } else {

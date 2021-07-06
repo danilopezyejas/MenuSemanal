@@ -8,6 +8,8 @@
     android:orientation="horizontal">
 
 
+
+
     <TextView
         android:id="@+id/txtNombreReceta"
         android:layout_width="match_parent"
@@ -23,6 +25,12 @@
      />
 
 
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:background="?android:attr/listDivider" />
 
     <TextView
         android:id="@+id/txtDescripcionReceta"

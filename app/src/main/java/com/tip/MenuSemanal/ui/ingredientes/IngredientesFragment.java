@@ -1,8 +1,5 @@
 package com.tip.MenuSemanal.ui.ingredientes;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,7 +26,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tip.MenuSemanal.Adaptadores.AdapterDatosIngredientes;
-import com.tip.MenuSemanal.Adaptadores.AdapterListaReceta;
 import com.tip.MenuSemanal.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +33,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 import Clases.Ingrediente;
-import Clases.Recetas;
 
 import static androidx.navigation.Navigation.findNavController;
 

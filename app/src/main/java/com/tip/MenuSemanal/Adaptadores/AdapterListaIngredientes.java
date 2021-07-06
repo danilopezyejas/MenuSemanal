@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import Clases.Ingrediente;
 import Enumeracion.unidades;
 
+import static com.tip.MenuSemanal.R.color.botones;
 import static com.tip.MenuSemanal.R.color.purple_200;
 
 
@@ -53,6 +54,7 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
     ArrayAdapter<String> listaAdapter;
     ArrayList<String> lista = new ArrayList<String>();
     boolean multiselect = false;
+
 
 
     public AdapterListaIngredientes(@NonNull ArrayList<Ingrediente> lingrediente, ImageButton btnMas,ImageButton btnRes) {
@@ -109,7 +111,6 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
         holder.item.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if(!b) Toast.makeText(holder.item.getContext(),"foco",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -171,7 +172,6 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
     }
 
     public void nuevoingrediente(){
-
         listaIngrediente.add (0,new Ingrediente("-1","",0f,0, unidades.GR.toString()));
 
         notifyDataSetChanged();
@@ -206,6 +206,9 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             acNombre.setAdapter(new ArrayAdapter<String>( item.getContext(),android.R.layout.simple_dropdown_item_1line,lista));
 
             acNombre.setThreshold(2);
+
+            //spinUnidad.setEnabled(ingrediente.getId().equals("-1"));
+
             if (ingrediente.getId().equals("-1")){
                 ingrediente.setId("");
                 acNombre.requestFocus();
@@ -241,9 +244,11 @@ public class AdapterListaIngredientes extends RecyclerView.Adapter<AdapterListaI
             edCantidad.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View view, boolean b) {
-                    if(!b)
+                    if(b) {
+                         if(edCantidad.getText().equals("0")) edCantidad.setText("");
+                    }else
                     try {
-                        ingrediente.setCantidad(Integer.parseInt(((EditText) view).getText().toString()));
+                       ingrediente.setCantidad(Integer.parseInt(((EditText) view).getText().toString()));
                     } catch (NumberFormatException e) {
                         ingrediente.setCantidad(0);
                     }

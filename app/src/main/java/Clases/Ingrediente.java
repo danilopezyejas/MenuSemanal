@@ -2,6 +2,8 @@ package Clases;
 //
 //import Enumeracion.unidades;
 
+import Enumeracion.unidades;
+
 public class Ingrediente {
     String id;
     String nombre;
@@ -65,4 +67,29 @@ public class Ingrediente {
     }
 
     public void setSel (boolean s ){ this.sel=s;}
+//
+//    public boolean setCantidad(int cantidad, String unidad){
+//        if (unidad.equals(this.unidad)){
+//            this.cantidad= cantidad;
+//            return true;
+//        }else
+//            if(this.unidad.equals(unidades.Ml.toString()) && unidad.equals(unidades.L.toString())){
+//                this.cantidad += cantidad*1000;
+//                return true;
+//            }else
+//                  if(this.unidad
+//    }
+
+    public void reasignaMenorUnidad(){
+        if (unidad.equals(unidades.Kg.toString())){
+            cantidad=cantidad*100;
+            unidad = unidades.GR.toString();
+        }else
+            if(unidad.equals(unidades.L.toString())){
+                cantidad=cantidad*1000;
+                unidad=unidades.Ml.toString();
+            }
+    }
+
+
 }

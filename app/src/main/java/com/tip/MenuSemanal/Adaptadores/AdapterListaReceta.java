@@ -1,6 +1,8 @@
 package com.tip.MenuSemanal.Adaptadores;
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +31,7 @@ import java.util.Date;
 import Clases.Menu;
 import Clases.Recetas;
 
+import static android.app.Application.getProcessName;
 import static androidx.navigation.Navigation.findNavController;
 import static com.tip.MenuSemanal.R.color.*;
 
@@ -35,7 +39,6 @@ import static com.tip.MenuSemanal.R.color.*;
 public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.ViewHoldersDatos> {
 
     ArrayList<Recetas> listaRecetas;
-    View viewant = null;
     int posant =-1;
     boolean multiselect = false;
     String previo = "";
@@ -43,7 +46,7 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
     int hoy;
     int diaAGuardar;
     DatabaseReference db;
-
+    View viewParent;
 
     public AdapterListaReceta(@NonNull ArrayList<Recetas> lRecetas, String previo, String comida, String dia) {
         listaRecetas = lRecetas;
@@ -62,6 +65,7 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
 
     public AdapterListaReceta.ViewHoldersDatos onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_recetas, parent, false);
+        viewParent=parent;
         return new ViewHoldersDatos(view);
     }
     @SuppressLint("ResourceAsColor")
@@ -73,6 +77,7 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
 
         receta = listaRecetas.get(position);
         holder.item.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.P)
             @Override
             public void onClick(View v) {
 
@@ -115,13 +120,13 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
                                 if (task.isComplete()) {
                                     paraHome.putString("diaGuardado", Integer.toString(diaAGuardar));
                                     //findNavController(holder.itemView).navigate(R.id.navigation_home, paraHome);
-                                    findNavController(holder.itemView).navigateUp();
+                                    findNavController(viewParent).navigateUp();
                                 }
                             }
                         });
                     }else {
                         arg.putString("param1", receta.getNombre());
-                        findNavController(holder.itemView).navigate(R.id.fragmentAgregarReceta, arg);
+                        findNavController(viewParent).navigate(R.id.fragmentAgregarReceta, arg);
                     }
                 }
             }
@@ -192,6 +197,8 @@ public class AdapterListaReceta extends RecyclerView.Adapter<AdapterListaReceta.
             listaRecetas.removeAll(elim);
             notifyDataSetChanged();
         }
+        multiselect=false;
+        posant=-1;
     }
 
     public class ViewHoldersDatos extends RecyclerView.ViewHolder {

@@ -282,6 +282,8 @@ public class dias_semana extends Fragment {
                 db = FirebaseDatabase.getInstance().getReference("Menu-Semana");
                 db.child(m.getId()).setValue(null);
                 findNavController(getView()).navigate(R.id.navigation_home, paraHome);
+                //findNavController(getView()).navigateUp();
+                //                ;
             }
         }
     }

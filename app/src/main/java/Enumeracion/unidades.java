@@ -6,7 +6,8 @@ public enum unidades {
     Ml("ml"),
     L("l"),
     CD("Cdas."),
-    CDTA("Cditas.");
+    CDTA("Cditas."),
+    Unidad("Un.");
 
     private final String unidad;
 

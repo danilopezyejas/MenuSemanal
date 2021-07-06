@@ -40,11 +40,10 @@ public class NotificationsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
 
         recyclerView = root.findViewById(R.id.recycleNotificaciones);
-        ingredientesRecetasMenu.clear();
-
 
         //Obtengo de la base la tabla Ingredientes
         db = FirebaseDatabase.getInstance().getReference("Ingredientes");
+        ingredientesRecetasMenu.clear();
 
         //Evaluo si trajo algo
         db.addValueEventListener(new ValueEventListener() {
@@ -75,7 +74,17 @@ public class NotificationsFragment extends Fragment {
                                             Ingrediente ingrediente = ingredientesDataSnap.getValue(Ingrediente.class);
                                             for (Ingrediente i : allIngredientes){
                                                 if(i.getId().equalsIgnoreCase(ingrediente.getId()) && i.getCantidad() == 0){
+                                                    int cant = 0;
+                                                    for (Ingrediente yaEsta : ingredientesRecetasMenu){
+                                                        if (yaEsta.getNombre().equals(ingrediente.getNombre())){
+                                                            ingredientesRecetasMenu.remove(cant);
+                                                            ingrediente.setCantidad(yaEsta.getCantidad() + ingrediente.getCantidad());
+                                                            break;
+                                                        }
+                                                        cant++;
+                                                    }
                                                     ingredientesRecetasMenu.add(ingrediente);
+                                                    break;
                                                 }
                                             }
                                         }

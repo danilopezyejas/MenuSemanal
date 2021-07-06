@@ -20,7 +20,7 @@
 
     <EditText
         android:id="@+id/EdCantidad"
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
@@ -33,9 +33,9 @@
 
     <Spinner
         android:id="@+id/spinUnidad"
-        android:layout_width="300sp"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:layout_weight="2"/>
+        android:layout_width="200sp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:gravity="left" />
 
 </LinearLayout>
